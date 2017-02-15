@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}
+  {% if user %}
+    {% for user in user %}
+      {{ user.username }}
+    {% endfor %}
+  {% else %}
+    User not found
+  {% endif %}
+{% endblock %}
+
+{% block body %}
+
+  {% if user %}
+
+    {% for user in user %}
+    
+
+      <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav"><br>
+                <li class="sidebar-brand">
+                    <strong>{{ user.username }}</strong>
+                </li>
+                
+                <hr>
+                <li><p class="sidebar-item"><strong>Member since:</strong> <br>{{ user.created_on[:10] }}</p></li>
+                <hr>
+                <li><p class="sidebar_item"><strong>Moderater of:</strong> </p></li>
+                {% if mod_subs %}
+                  {% for sub in mod_subs %}
+                    <li><a href="{{ url_for('subreddit', subreddit=sub.subreddit_name) }}">/r/{{ sub.subreddit_name }}</a></li>
+                  {% endfor %}
+                {% else %}
+                  <li>N/A</li>
+                {% endif %}
+
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                      <ul class="nav nav-tabs">
+                        <li class="active" id="posts-tab"><a href="#posts" id="show-posts"><span class="#"> </span> Posts</a></li>
+                        <li id="comments-tab"><a href="#comments" id="show-comments"><span class="#"> </span> Comments</a></li>
+                      </ul> 
+
+
+                      <div class="tab-content">
+                      <div id="posts" class="tab-pane fade in active">
+                        <h2>Recent posts by {{ user.username }}</h2>
+
+
+                        {% if user_posts %}
+                        {% set upvote_count = 0 %}
+                        {% set downvote_count = 0 %}
+                          {% for post in user_posts %}
+                           <div class="bs-callout bs-callout-primary">
+
+                            <div class="post-votes noselect">
+                              <input type="hidden" class="vote-post-id" value="{{ post.post_id }}">
+                              {% if session['username'] %}
+                                <input type="hidden" class="upvoted-by-user" value="{{ session['username'] }}">
+                               
+                                  {% if post.post_id in upvoted_by_user[upvote_count] %}
+                                      <span class="glyphicon glyphicon-arrow-up prev-upvoted" id="prev-upvoted"> </span><br>
+                                      {% set upvote_count = upvote_count + 1 %}
+                                  {% else %}                                                  
+                                      <span class="glyphicon glyphicon-arrow-up upvote" id="upvote"> </span><br>
+                                  {% endif %}     
+                    
+                              {% else %}
+                                <span class="glyphicon glyphicon-arrow-up upvote-disabled" data-toggle="modal" data-target="#vote-login"> </span><br>
+                              {% endif %}
+                              <span class="votes-number">{{ post.post_votes }}</span><br>
+                              {% if session['username'] %}
+                                <input type="hidden" class="downvoted-by-user" value="{{ session['username'] }}">
+
+                                  {% if post.post_id in downvoted_by_user[downvote_count] %}
+                                    <span class="glyphicon glyphicon-arrow-down prev-downvoted" id="prev-downvoted"> </span><br>
+                                     {% set downvote_count = downvote_count + 1 %}
+                                  {% else %}
+                                    <span class="glyphicon glyphicon-arrow-down downvote" id="downvote"> </span><br>
+                                  {% endif %}
+
+                              {% else %}
+                                <span class="glyphicon glyphicon-arrow-down downvote-disabled" data-toggle="modal" data-target="#vote-login"> </span><br>
+                              {% endif %}
+                            </div>
+
+
+
+                          {% if post.post_type == 'link' %}
+                            <a href="{{ ''.join([' ',post.post_link]) }}" class="sub-list-link" target="_blank">{{ post.post_title }} <span class="#"></span></a><br>
+                          {% else %}
+                            <a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}" class="sub-list-link">{{ post.post_title }} <span class="#"></span></a><br>
+                          {% endif %}
+                            <small>submitted on {{ post.post_timestamp }} by <a href="{{ url_for('user',user=post.related_user_id) }}">/u/{{ post.related_user_id }}</a> to <a href="{{ url_for('subreddit',subreddit=post.related_subreddit_name) }}">/r/{{ post.related_subreddit_name }}</a> </small> 
+                            <br><small><a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}">comments</a></small>
+                          </div> 
+                          {% endfor %}
+                        {% else %}
+                          <div class="alert alert-warning">
+                            {{ user.username }}  has not posted anything yet.
+                          </div>
+                        {% endif %}
+
+                      </div><!-- post tab -->
+    
+                      <div id="comments" class="tab-pane fade">
+                          
+                        <h2>Comments by {{ user.username }}</h2>
+
+
+                        {% if user_comments %}
+                          {% for comment in user_comments %}
+                            {% for related_post in posts %}
+                              {% if related_post.post_id == comment.related_post_id %}
+                              <div class="bs-callout bs-callout-info">
+                                <small><a href="{{ url_for('user', user=user.username) }}">{{ user.username }}</a> commented on post - <a href="{{ url_for('comments_section', subreddit=related_post.related_subreddit_name, post_id = related_post.post_id, post_title = related_post.url_friendly_title, _anchor=comment.comment_id) }}">{{ related_post.post_title }}</a></small> 
+                                <blockquote><p>{{ comment.comment_text }}</p></blockquote>
+                                <small>{{ comment.comment_timestamp }}</small> 
+                              </div>
+                              {% endif %}
+                            {% endfor %}
+
+                          {% endfor %}
+                        {% else %}
+                          <div class="alert alert-warning">
+                            {{ user.username }}  has not commented on anything yet.
+                          </div>
+                        {% endif %}
+
+
+
+
+
+
+                      </div><!-- comments tab -->
+
+
+
+
+                        <a href="#menu-toggle" class="btn btn-default btn-sm toggle-sidebar" id="menu-toggle"><span class="glyphicon glyphicon-th-list"> </span> Sidebar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+      
+
+      
+    {% endfor %}
+
+
+
+
+  {% else %}
+    {% if error %}
+      <div class="alert alert-warning" role="alert">
+        <strong>Oops! </strong>User '<strong>{{ error }}</strong>' does not exist
+      </div>
+    {% endif %}
+
+  {% endif %}
+
+{% endblock %}

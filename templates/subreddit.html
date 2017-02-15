@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}
+  {% if sub %}
+    {% for row in sub %}
+      /r/{{ row.subreddit_name }}
+    {% endfor %}
+  {% else %}
+    Subreddit not found
+  {% endif %}
+{% endblock %}
+
+{% block body %}
+
+  {% if sub %}
+
+    {% for row in sub %}
+    
+
+      <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav"><br>
+                <a href="{{ url_for('submit_form', _anchor='link') }}" class="btn btn-primary btn-block btn-sq"><span class="glyphicon glyphicon-link"> </span> new link</a>
+                <a href="{{ url_for('submit_form', _anchor='text') }}" class="btn btn-primary btn-block btn-sq"><span class="glyphicon glyphicon-pencil"> </span> new text post</a>
+
+                <li class="sidebar-brand">
+                    <strong>{{ row.subreddit_name }}</strong>
+                </li>
+                
+                <li>
+                    <small class="sidebar-item">{{ row.subreddit_title }}</small>
+                </li>
+                <hr>
+                <li>
+                    <small>Description:</small>
+                    <p class="sidebar-item">{{ row.subreddit_desc }}</p>
+                </li>
+                <hr>
+                <li>
+                    <small>Info:</small>
+                    <p class="sidebar-item">{{ row.subreddit_sidebar }}</p>
+                </li>
+                <hr>
+                <li>
+                    <small>Moderators:</small>
+                    <p class="sidebar-item"><a href="{{ url_for('user',user=row.created_by_user) }}">/u/{{ row.created_by_user }}</a></p>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>{{ row.subreddit_name }}</h1>
+                        
+                        <ul class="nav nav-tabs">
+                          <li class="active" id="new-tab"><a href="#new" id="show-new"><span class="#"> </span> New</a></li>
+                          <li id="top-tab"><a href="#top" id="show-top"><span class="#"> </span> Top</a></li>
+                        </ul> 
+
+
+                       <div class="tab-content">
+                       <div id="new" class="tab-pane fade in active">
+
+                    {% set upvote_count = 0 %}
+                    {% set downvote_count = 0 %}
+                        {% for post in sub_posts_new %}
+
+                          <div class="bs-callout bs-callout-primary">
+
+
+                            <div class="post-votes noselect">
+                              <input type="hidden" class="vote-post-id" value="{{ post.post_id }}">
+                              {% if session['username'] %}
+                                <input type="hidden" class="upvoted-by-user" value="{{ session['username'] }}">
+                               
+                                  {% if post.post_id in upvoted_by_user[upvote_count] %}
+                                      <span class="glyphicon glyphicon-arrow-up prev-upvoted" id="prev-upvoted"> </span><br>
+                                      {% set upvote_count = upvote_count + 1 %}
+                                  {% else %}                                                  
+                                      <span class="glyphicon glyphicon-arrow-up upvote" id="upvote"> </span><br>
+                                  {% endif %}     
+                    
+                              {% else %}
+                                <span class="glyphicon glyphicon-arrow-up upvote-disabled" data-toggle="modal" data-target="#vote-login"> </span><br>
+                              {% endif %}
+                              <span class="votes-number">{{ post.post_votes }}</span><br>
+                              {% if session['username'] %}
+                                <input type="hidden" class="downvoted-by-user" value="{{ session['username'] }}">
+
+                                  {% if post.post_id in downvoted_by_user[downvote_count] %}
+                                    <span class="glyphicon glyphicon-arrow-down prev-downvoted" id="prev-downvoted"> </span><br>
+                                     {% set downvote_count = downvote_count + 1 %}
+                                  {% else %}
+                                    <span class="glyphicon glyphicon-arrow-down downvote" id="downvote"> </span><br>
+                                  {% endif %}
+
+                              {% else %}
+                                <span class="glyphicon glyphicon-arrow-down downvote-disabled" data-toggle="modal" data-target="#vote-login"> </span><br>
+                              {% endif %}
+                            </div>
+
+
+                          {% if post.post_type == 'link' %}
+                            <a href="{{ ''.join([' ',post.post_link]) }}" class="sub-list-link" target="_blank">{{ post.post_title }} <span class="#"></span></a><br>
+                          {% else %}
+                            <a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}" class="sub-list-link">{{ post.post_title }} <span class="#"></span></a><br>
+                          {% endif %}
+                            <small>submitted on {{ post.post_timestamp }} by <a href="{{ url_for('user',user=post.related_user_id) }}">/u/{{ post.related_user_id }}</a> to <a href="{{ url_for('subreddit',subreddit=post.related_subreddit_name) }}">/r/{{ post.related_subreddit_name }}</a> </small> 
+                            <br><small><a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}">comments</a></small>
+                          </div>
+                                                                                    
+                        {% endfor %}
+                       </div><!-- /new posts -->
+
+                    {% set top_upvote_count = 0 %}
+                    {% set top_downvote_count = 0 %}
+                       <div id="top" class="tab-pane fade">
+                        {% for post in sub_posts_top %}
+
+                          <div class="bs-callout bs-callout-primary">
+
+                            <div class="post-votes noselect">
+                              <input type="hidden" class="vote-post-id" value="{{ post.post_id }}">
+                              {% if session['username'] %}
+                                <input type="hidden" class="upvoted-by-user" value="{{ session['username'] }}">
+                               
+                                  {% if post.post_id in top_upvoted_by_user[top_upvote_count] %}
+                                      <span class="glyphicon glyphicon-arrow-up prev-upvoted" id="prev-upvoted"> </span><br>
+                                      {% set top_upvote_count = top_upvote_count + 1 %}
+                                  {% else %}                                                  
+                                      <span class="glyphicon glyphicon-arrow-up upvote" id="upvote"> </span><br>
+                                  {% endif %}     
+                    
+                              {% else %}
+                                <span class="glyphicon glyphicon-arrow-up upvote-disabled" data-toggle="modal" data-target="#vote-login"> </span><br>
+                              {% endif %}
+                              <span class="votes-number">{{ post.post_votes }}</span><br>
+                              {% if session['username'] %}
+                                <input type="hidden" class="downvoted-by-user" value="{{ session['username'] }}">
+
+                                  {% if post.post_id in top_downvoted_by_user[top_downvote_count] %}
+                                    <span class="glyphicon glyphicon-arrow-down prev-downvoted" id="prev-downvoted"> </span><br>
+                                     {% set top_downvote_count = top_downvote_count + 1 %}
+                                  {% else %}
+                                    <span class="glyphicon glyphicon-arrow-down downvote" id="downvote"> </span><br>
+                                  {% endif %}
+
+                              {% else %}
+                                <span class="glyphicon glyphicon-arrow-down downvote-disabled" data-toggle="modal" data-target="#vote-login"> </span><br>
+                              {% endif %}
+                            </div>
+
+
+                          {% if post.post_type == 'link' %}
+                            <a href="{{ ''.join([' ',post.post_link]) }}" class="sub-list-link" target="_blank">{{ post.post_title }} <span class="#"></span></a><br>
+                          {% else %}
+                            <a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}" class="sub-list-link">{{ post.post_title }} <span class="#"></span></a><br>
+                          {% endif %}
+                            <small>submitted on {{ post.post_timestamp }} by <a href="{{ url_for('user',user=post.related_user_id) }}">/u/{{ post.related_user_id }}</a> to <a href="{{ url_for('subreddit',subreddit=post.related_subreddit_name) }}">/r/{{ post.related_subreddit_name }}</a> </small> 
+                            <br><small><a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}">comments</a></small>
+                          </div>
+                                                                                    
+                        {% endfor %}
+
+                       </div><!-- /top posts -->
+
+                       </div><!-- /tab-content -->
+
+                        <!-- Sidebar toggle -->
+                        <a href="#menu-toggle" class="btn btn-default btn-sm toggle-sidebar" id="menu-toggle"><span class="glyphicon glyphicon-th-list"> </span> Sidebar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+      
+
+      
+    {% endfor %}
+
+
+
+
+  {% else %}
+    {% if error %}
+      <div class="alert alert-info" role="alert">
+        <strong>Oops! </strong> - <strong>{{ error }}</strong> is not a
+        subreddit, why not create it yourself? <br><br><a class="btn btn-primary
+        btn-sm"
+        href="{{ url_for('subreddit_creation_form') }}">Create a subreddit</a>
+      </div>
+    {% endif %}
+
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Create a subreddit{% endblock %}
+
+{% block body %}
+
+  <div class="col-md-8 col-md-offset-2"><br><br>
+    <h1>Create a subreddit</h1><hr>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Fill out the form below to create your own subreddit</div>
+        <div class="panel-body">
+
+          <form action="{{ url_for('create_subreddit') }}" method="POST" enctype="multipart/form-data">
+
+            <div class="form-group">
+              <label for="subreddit_name">Name your subreddit</label><br>
+              <small id="name-help" class="form-text text-muted">This
+              will appear in the URL. No
+              spaces, e.g. "books" or "bookclub". Once chosen, this name cannot
+              be changed.</small>
+              <input type="text" maxlength="20" name="subreddit_name" id="subreddit_name"
+              class="form-control nospace" placeholder="Name your subreddit" required autofocus>
+            </div>
+
+            <div class="form-group">
+              <label for="subreddit_title">Title</label><br>
+              <small id="title-help" class="form-text text-muted">e.g., "books:
+              made from trees or pixels. recommendations, news, or thoughts."</small>
+              <input type="text" maxlength="100" name="subreddit_title" id="subreddit_title"
+              class="form-control" placeholder="Give your subreddit a title" required>
+            </div>
+
+            <div class="form-group">
+              <label for="subreddit_desc">Describe your subreddit</label><br>
+              <small id="desc-help" class="form-text text-muted">A brief description
+              of what your comminity is about.</small>
+
+              <textarea rows="4" maxlength="500" class="form-control" id="subreddit_desc"
+              name="subreddit_desc" placeholder="Describe your subreddit"
+              required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="subreddit_sidebar">Sidebar information</label><br>
+              <small id="sidebar-help" class="form-text text-muted">This will
+              appear in the sidebar of your subreddit. You may want to include
+              some rules that people in your community should follow.</small>
+
+              <textarea rows="4" maxlength="500" class="form-control"
+              id="subreddit_sidebar" name="subreddit_sidebar"
+              placeholder="Sidebar information" required></textarea>
+
+            </div>
+
+  
+
+            <button type="submit" class="btn btn-primary">Create</button>
+
+          </form>
+
+        </div>
+    </div>
+  </div>
+
+{% endblock %}

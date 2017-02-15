@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Subreddits{% endblock %}
+
+{% block body %}
+
+  <h1>Subreddits</h1>
+
+  {% if rows %}
+
+    <!-- autocomplete search form -->
+    <input type="text" name="subreddit_name" id="subreddit_name" class="form-control input-lg" placeholder="Search subreddits..." autofocus>
+
+
+    <hr>
+    <h3>all subreddits</h3>
+    {% for row in rows %}
+
+      <div class="bs-callout bs-callout-primary">
+      <a href="{{ url_for('subreddit', subreddit=row.subreddit_name) }}" class="sub-list-link">/r/{{ row.subreddit_name }}</a>
+      <p class="minimise">{{ row.subreddit_desc }}</p>
+      </div>
+
+    {% endfor %}
+
+
+  {% endif %}
+
+             <!-- Autocomplete search script -->
+              <script>
+                
+                  var subreddits = [
+                    {% for subs in rows %}
+                    {
+                    link: "{{ url_for('subreddit', subreddit = subs.subreddit_name) }}",
+                    label: "{{ subs.subreddit_name }}"
+                    },
+                    {% endfor %}
+                  ];
+                  $("#subreddit_name").autocomplete({
+                    delay: 0,
+                    minLength:1,
+                    autoFocus:true,
+                    source: subreddits,   
+                    select: function(event, ui){ 
+                      window.location.href = ui.item.link;                                           
+                    },
+                    change: function(event,ui)
+                      {
+                      if (ui.item==null)
+                        {
+                        $("#subreddit_name").focus();                                          
+                        }
+                      }
+                  });
+                
+              </script> 
+
+
+{% endblock %}

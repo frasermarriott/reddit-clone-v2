@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}frontpage{% endblock %}
+
+{% block body %}
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav"><br>
+              <a href="{{ url_for('submit_form', _anchor='link') }}" class="btn btn-primary btn-block btn-sq"><span class="glyphicon glyphicon-link"> </span> submit a link</a>
+              <a href="{{ url_for('submit_form', _anchor='text') }}" class="btn btn-primary btn-block btn-sq"><span class="glyphicon glyphicon-pencil"> </span> new text post</a>
+              <a href="{{ url_for('subreddit_creation_form') }}" class="btn btn-default btn-block btn-sq btn-create-sub"><span class="glyphicon glyphicon-wrench"> </span> create a subreddit</a>
+                <li class="sidebar-brand">
+                    <strong>reddit</strong>
+                </li>
+                
+                <li>
+                    <small class="sidebar-item">Reddit is a community based website where you can share links, text, and comments</small>
+                </li>
+                
+                
+                {% if session['username'] %}
+                {% else %}
+                  <hr>
+                  <li>
+                    <form action="{{ url_for('login') }}" method="POST">
+                      <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" maxlength="15" name="username" id="username" class="form-control sidebar-login nospace" placeholder="Username" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" maxlength="50" name="password" id="password" class="form-control sidebar-login" placeholder="Password" required>
+                      </div>
+                      <button type="submit" class="btn btn-default btn-sm">Login</button>
+                      <a href="{{ url_for('register') }}" class="btn btn-default btn-sm">Sign up</a>
+                    </form>
+                  </li>
+                {% endif %}
+                <hr>
+                <li>
+                    <small>Heading:</small>
+                    <p class="sidebar-item">sidebar content</p>
+                </li>
+                <hr>
+                <li>
+                    <small>Heading:</small>
+                    <p class="sidebar-item">more sidebar content...</p>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!--<h1>frontpage</h1>-->
+
+                
+
+                        <ul class="nav nav-tabs">
+                          <li class="active" id="new-tab"><a href="#new" id="show-new"><span class="#"> </span> New</a></li>
+                          <li id="top-tab"><a href="#top" id="show-top"><span class="#"> </span> Top</a></li>
+                        </ul> 
+                        
+                        <div class="tab-content">
+                        <div id="new" class="tab-pane fade in active">
+
+                      {% set upvote_count = 0 %}
+                      {% set downvote_count = 0 %}
+                         {% for post in new_posts %}
+                      
+                          <div class="bs-callout bs-callout-primary">
+                            <div class="post-votes noselect">
+                              <input type="hidden" class="vote-post-id" value="{{ post.post_id }}">
+                              {% if session['username'] %}
+                                <input type="hidden" class="upvoted-by-user" value="{{ session['username'] }}">
+                               
+                                  {% if post.post_id in upvoted_by_user[upvote_count] %}
+                                      <span class="glyphicon glyphicon-arrow-up prev-upvoted" id="prev-upvoted"> </span><br>
+                                      {% set upvote_count = upvote_count + 1 %}
+                                  {% else %}                                                  
+                                      <span class="glyphicon glyphicon-arrow-up upvote" id="upvote"> </span><br>
+                                  {% endif %}     
+                    
+                              {% else %}
+                                <span class="glyphicon glyphicon-arrow-up upvote-disabled" data-toggle="modal" data-target="#vote-login"> </span><br>
+                              {% endif %}
+                              <span class="votes-number">{{ post.post_votes }}</span><br>
+                              {% if session['username'] %}
+                                <input type="hidden" class="downvoted-by-user" value="{{ session['username'] }}">
+
+                                  {% if post.post_id in downvoted_by_user[downvote_count] %}
+                                    <span class="glyphicon glyphicon-arrow-down prev-downvoted" id="prev-downvoted"> </span><br>
+                                     {% set downvote_count = downvote_count + 1 %}
+                                  {% else %}
+                                    <span class="glyphicon glyphicon-arrow-down downvote" id="downvote"> </span><br>
+                                  {% endif %}
+
+                              {% else %}
+                                <span class="glyphicon glyphicon-arrow-down downvote-disabled" data-toggle="modal" data-target="#vote-login"> </span><br>
+                              {% endif %}
+                            </div>
+
+
+                          {% if post.post_type == 'link' %}
+                            <a href="{{ ''.join([' ',post.post_link]) }}" class="sub-list-link" target="_blank">{{ post.post_title }} <span class="#"></span></a><br>
+                          {% else %}
+                            <a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}" class="sub-list-link">{{ post.post_title }} <span class="#"></span></a><br>
+                          {% endif %}
+                            <small>submitted on {{ post.post_timestamp }} by <a href="{{ url_for('user',user=post.related_user_id) }}">/u/{{ post.related_user_id }}</a> to <a href="{{ url_for('subreddit',subreddit=post.related_subreddit_name) }}">/r/{{ post.related_subreddit_name }}</a> </small> 
+                            <br><small><a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}">comments</a></small>
+                          </div>
+                                                                                    
+                        {% endfor %} 
+                       </div><!-- /new -->
+
+                    {% set top_upvote_count = 0 %}
+                    {% set top_downvote_count = 0 %}
+                       <div id="top" class="tab-pane fade">
+                        {% for post in top_posts %}
+
+                          <div class="bs-callout bs-callout-primary">
+                            
+                            <div class="post-votes noselect">
+                              <input type="hidden" class="vote-post-id" value="{{ post.post_id }}">
+                              {% if session['username'] %}
+                                <input type="hidden" class="upvoted-by-user" value="{{ session['username'] }}">
+                               
+                                  {% if post.post_id in top_upvoted_by_user[top_upvote_count] %}
+                                      <span class="glyphicon glyphicon-arrow-up prev-upvoted" id="prev-upvoted"> </span><br>
+                                      {% set top_upvote_count = top_upvote_count + 1 %}
+                                  {% else %}                                                  
+                                      <span class="glyphicon glyphicon-arrow-up upvote" id="upvote"> </span><br>
+                                  {% endif %}     
+                    
+                              {% else %}
+                                <span class="glyphicon glyphicon-arrow-up upvote-disabled" data-toggle="modal" data-target="#vote-login"> </span><br>
+                              {% endif %}
+                              <span class="votes-number">{{ post.post_votes }}</span><br>
+                              {% if session['username'] %}
+                                <input type="hidden" class="downvoted-by-user" value="{{ session['username'] }}">
+
+                                  {% if post.post_id in top_downvoted_by_user[top_downvote_count] %}
+                                    <span class="glyphicon glyphicon-arrow-down prev-downvoted" id="prev-downvoted"> </span><br>
+                                     {% set top_downvote_count = top_downvote_count + 1 %}
+                                  {% else %}
+                                    <span class="glyphicon glyphicon-arrow-down downvote" id="downvote"> </span><br>
+                                  {% endif %}
+
+                              {% else %}
+                                <span class="glyphicon glyphicon-arrow-down downvote-disabled" data-toggle="modal" data-target="#vote-login"> </span><br>
+                              {% endif %}
+                            </div>
+
+
+
+                          {% if post.post_type == 'link' %}
+                            <a href="{{ ''.join([' ',post.post_link]) }}" class="sub-list-link" target="_blank">{{ post.post_title }} <span class="#"></span></a><br>
+                          {% else %}
+                            <a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}" class="sub-list-link">{{ post.post_title }} <span class="#"></span></a><br>
+                          {% endif %}
+                            <small>submitted on {{ post.post_timestamp }} by <a href="{{ url_for('user',user=post.related_user_id) }}">/u/{{ post.related_user_id }}</a> to <a href="{{ url_for('subreddit',subreddit=post.related_subreddit_name) }}">/r/{{ post.related_subreddit_name }}</a> </small> 
+                            <br><small><a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}">comments</a></small>
+                          </div>
+                                                              
+                        {% endfor %} 
+
+                       </div><!-- /top -->
+
+
+                       </div><!-- /tab-content -->
+                        
+
+
+                        <a href="#menu-toggle" class="btn btn-default btn-sm toggle-sidebar" id="menu-toggle"> <span class="glyphicon glyphicon-th-list"> </span> Sidebar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+
+
+  
+
+{% endblock %}

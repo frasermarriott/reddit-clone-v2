@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Confirmation{% endblock %}
+
+{% block body %}
+
+  <!-- registration messages -->
+  {% if message == 'registration_success' %}
+    <h1>Account Created</h1>
+    <div class="alert alert-success">
+      Thank you for registering, please log in to get started.
+    </div>
+    <a href="{{ url_for('login') }}" class="btn btn-primary">Log in</a>
+  {% endif %}
+
+  {% if message == 'registration_error' %}
+    <h1>Error</h1>
+    <div class="alert alert-danger">
+      <p>Sorry, there was an error when creating your account, it is possible that you attemped to select a username that is already in use by another user.</p>
+    </div>
+    <a href="{{ url_for('register') }}" class="btn btn-primary">Back</a>
+  {% endif %}
+
+{% endblock %}

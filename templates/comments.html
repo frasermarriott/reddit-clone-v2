@@ -1,0 +1,330 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}
+  {% if post_details %}
+    {% for post in post_details %}
+      {{ post.post_title }} - comments
+    {% endfor %}
+  {% else %}
+    Post not found
+  {% endif %}
+{% endblock %}
+
+{% block body %}
+
+  {% if post_details %}
+
+    {% for post in post_details %}
+    
+
+      <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav"><br>
+                <a href="{{ url_for('submit_form', _anchor='link') }}" class="btn btn-primary btn-block btn-sq"><span class="glyphicon glyphicon-link"> </span> new link</a>
+                <a href="{{ url_for('submit_form', _anchor='text') }}" class="btn btn-primary btn-block btn-sq"><span class="glyphicon glyphicon-pencil"> </span> new text post</a>
+
+              {% for sub in subreddit %}
+                <li class="sidebar-brand">
+                    <strong>{{ sub.subreddit_name }}</strong>
+                </li>
+                
+                <li>
+                    <small class="sidebar-item">{{ sub.subreddit_title }} </small>
+                </li>
+                <hr>
+                <li>
+                    <small>Description:</small>
+                    <p class="sidebar-item">{{ sub.subreddit_desc }} </p>
+                </li>
+                <hr>
+                <li>
+                    <small>Info:</small>
+                    <p class="sidebar-item">{{ sub.subreddit_sidebar }}</p>
+                </li>
+                <hr>
+                <li>
+                    <small>Moderators:</small>
+                    <p class="sidebar-item">
+                      <a href="{{ url_for('user', user=sub.created_by_user) }}">/u/{{ sub.created_by_user }}</a>
+                    </p>
+                </li>
+
+              {% endfor %}
+
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                      
+                        <!-- Display Post Details -->
+                        
+                        <div class="panel panel-default panel-post">
+                          <div class="panel-body">
+                            {% if post.post_type == 'link' %} 
+                              <h3><a href="{{ ''.join([' ',post.post_link]) }}" class="post-title-link" target="_blank"> {{ post.post_title }}</a></h3>
+                            {% else %}
+                              <h3>{{ post.post_title }}</h3>
+                                <div class="panel panel-default panel-textarea">
+                                  <div class="panel-body">
+                                    <p>{{ post.post_textarea }}</p>
+                                  </div>
+                                </div>
+
+                            {% endif %}
+
+                            {% if post.related_user_id == session['username'] %}
+                              <small>submitted on {{ post.post_timestamp }} by <a href="{{ url_for('user', user=post.related_user_id) }}"><span class="label label-primary label-op">/u/{{post.related_user_id}}</span></a> - 
+                              <form action="{{ url_for('delete_post') }}" method="post" enctype="multipart/form-data" id="deletePost" style="display:inline;">
+                                <input type="hidden" name="post_id" value="{{ post.post_id }}">
+                                <a href="">edit </a> <button type="button" class="btn btn-link btn-xs" data-toggle="modal" data-target="#delete-post-modal" style="color:#ce1414;">delete </button>
+                              </form>
+                              </small>
+                            {% else %}
+                              <small>submitted on {{ post.post_timestamp }} by <a href="{{ url_for('user', user=post.related_user_id) }}">/u/{{post.related_user_id}}</a> </small>
+                            {% endif %}
+                          </div>
+                        </div>
+
+                        <!-- /end post header -->
+
+                        <div class="comments-wrapper">
+                          <div class="comment-form-container">
+
+                            <form action="{{ url_for('add_comment') }}" method="POST" enctype="multipart/form-data">
+                              <input type="hidden" name="related_post_id" id="related_post_id" value="{{post.post_id}}">
+                              <input type="hidden" name="parent_id" id="parent_id" value="none">
+                              <input type="hidden" name="related_user_id" id="related_user_id" value="{{session['username']}}">
+                              <input type="hidden" name="comment_level" id="comment_level" value="0">
+                              <input type="hidden" name="comment_votes" id="comment_votes" value="0">
+
+
+                              <!-- these will be used to help redirect the user back here after commenting -->
+                              <input type="hidden" name="subreddit" id="subreddit" value="{{post.related_subreddit_name}}">
+                              <input type="hidden" name="post_title" id="post_title" value="{{post.url_friendly_title}}">
+
+                              <textarea rows="2" class="form-control comment-form" name="comment_text" id="comment_text" placeholder="Post a comment" required></textarea><br>
+                              <button type="submit" class="btn btn-default btn-sm btn-sq">post comment</button>
+                            </form>
+
+                          </div>
+
+
+
+
+                         
+                          {% for comment in top_level_comments %}
+                            <div class="bs-callout bs-callout-primary bs-comment level-{{comment.comment_level}}" id="{{ comment.comment_id }}">
+                              <div class="comment-content">
+                                <div class="comment-header">
+                                  <!-- Give username a label if the commenter is the original poster -->
+                                  {% if comment.related_user_id == post.related_user_id %}
+                                    <small><strong><a href="{{ url_for('user', user=comment.related_user_id) }}"><span class="label label-primary label-op">{{ comment.related_user_id }}</span></a></strong> - <span class="comment-votes">{{ comment.comment_votes }}</span> points - {{ comment.comment_timestamp }}</small>
+                                  {% else %}
+                                    <small><strong><a href="{{ url_for('user', user=comment.related_user_id) }}">{{ comment.related_user_id }}</a></strong> - <span class="comment-votes">{{ comment.comment_votes }}</span> points - {{ comment.comment_timestamp }}</small> 
+                                  {% endif %}
+                                </div>
+                                <div class="comment-text">
+                                  {{ comment.comment_text }}
+                                </div>
+                                <div class="comment-controls">
+                                  {% if comment.related_user_id == session['username'] %}
+                                    <small><a href="#a" id="reply-btn" class="reply-btn">reply</a> - <a href="#">edit</a> - <a href="#" style="color:#ce1414;">delete</a></small>
+                                  {% else %}
+                                    <small><a href="#a" id="reply-btn" class="reply-btn">reply</a></small>
+                                  {% endif %}
+                                </div>
+
+                                <div class="reply-form hidden" id="{{ comment.comment_id }}">                                  
+                                  <form action="{{ url_for('add_reply') }}" method="POST" enctype="multipart/form-data">
+
+                                    <input type="hidden" name="related_post_id" id="related_post_id" value="{{ post.post_id }}">
+                                    <input type="hidden" name="parent_level" id="parent_level" value="{{ comment.comment_level }}">
+                                    <input type="hidden" name="parent_id" id="parent_id" value="{{ comment.comment_id }}">
+                                    <input type="hidden" name="top_parent_id" id="top_parent_id" value="{{ comment.comment_id }}">
+
+                                    <input type="hidden" name="subreddit" id="subreddit" value="{{ post.related_subreddit_name }}">
+                                    <input type="hidden" name="related_post_id" id="related_post_id" value="{{ post.post_id }}">
+                                    <input type="hidden" name="post_title" id="post_title" value="{{ post.url_friendly_title }}">
+
+                                    <textarea rows="2" class="form-control comment-form" name="reply_text" id="reply_text" placeholder="reply to comment" required autofocus></textarea>
+                                    <br><button type="submit" class="btn btn-default btn-xs btn-sq">reply</button>
+                                  </form>
+                                </div>
+
+
+                              </div>
+                            </div>
+
+
+                            <!-- Nested comment replies -->
+
+
+                            {% for reply in comment_replies %}
+                              {% if comment.comment_id == reply.parent_id %}
+
+                            <div class="bs-callout bs-callout-success bs-comment level-{{reply.comment_level}}" id="{{ reply.comment_id }}">
+                              <div class="comment-content">
+                                <div class="comment-header">
+                                  <!-- Give username a label if the commenter is the original poster -->
+                                  {% if reply.related_user_id == post.related_user_id %}
+                                    <small><strong><a href="{{ url_for('user', user=reply.related_user_id) }}"><span class="label label-primary label-op">{{ reply.related_user_id }}</span></a></strong> - <span class="comment-votes">{{ reply.comment_votes }}</span> points - {{ reply.comment_timestamp }}</small>
+                                  {% else %}
+                                    <small><strong><a href="{{ url_for('user', user=reply.related_user_id) }}">{{ reply.related_user_id }}</a></strong> - <span class="comment-votes">{{ reply.comment_votes }}</span> points - {{ reply.comment_timestamp }}</small> 
+                                  {% endif %}
+                                </div>
+                                <div class="comment-text">
+                                  {{ reply.comment_text }}
+                                </div>
+                                <div class="comment-controls">
+                                  {% if reply.related_user_id == session['username'] %}
+                                    <small><a href="#a" id="reply-btn" class="reply-btn">reply</a> - <a href="#">edit</a> - <a href="#" style="color:#ce1414;">delete</a></small>
+                                  {% else %}
+                                    <small><a href="#a" id="reply-btn" class="reply-btn">reply</a></small>
+                                  {% endif %}
+                                </div>
+
+                                <div class="reply-form hidden" id="{{ reply.comment_id }}">                                  
+                                  <form action="{{ url_for('add_reply') }}" method="POST" enctype="multipart/form-data">
+
+                                    <input type="hidden" name="related_post_id" id="related_post_id" value="{{ post.post_id }}">
+                                    <input type="hidden" name="parent_level" id="parent_level" value="{{ reply.comment_level }}">
+                                    <input type="hidden" name="parent_id" id="parent_id" value="{{ reply.parent_id }}">
+                                    <input type="hidden" name="top_parent_id" id="top_parent_id" value="{{ reply.top_parent_id }}">
+
+                                    <input type="hidden" name="subreddit" id="subreddit" value="{{ post.related_subreddit_name }}">
+                                    <input type="hidden" name="related_post_id" id="related_post_id" value="{{ post.post_id }}">
+                                    <input type="hidden" name="post_title" id="post_title" value="{{ post.url_friendly_title }}">
+
+                                    <textarea rows="2" class="form-control comment-form" name="reply_text" id="reply_text" placeholder="reply to comment" required autofocus></textarea>
+                                    <br><button type="submit" class="btn btn-default btn-xs btn-sq">reply</button>
+                                  </form>
+                                </div>
+
+
+                              </div>
+                            </div>
+
+                              {% endif %}
+
+                              
+
+                              {% for r in comment_replies %}
+                                {% if r.parent_id == reply.comment_id and comment.comment_id == r.top_parent_id %}
+
+                            <div class="bs-callout bs-callout-success bs-comment level-{{r.comment_level}}" id="{{ r.comment_id }}">
+                              <div class="comment-content">
+                                <div class="comment-header">
+                                  <!-- Give username a label if the commenter is the original poster -->
+                                  {% if r.related_user_id == post.related_user_id %}
+                                    <small><strong><a href="{{ url_for('user', user=r.related_user_id) }}"><span class="label label-primary label-op">{{ r.related_user_id }}</span></a></strong> - <span class="comment-votes">{{ r.comment_votes }}</span> points - {{ r.comment_timestamp }}</small>
+                                  {% else %}
+                                    <small><strong><a href="{{ url_for('user', user=r.related_user_id) }}">{{ reply.related_user_id }}</a></strong> - <span class="comment-votes">{{ r.comment_votes }}</span> points - {{ r.comment_timestamp }}</small> 
+                                  {% endif %}
+                                </div>
+                                <div class="comment-text">
+                                  {{ r.comment_text }}
+                                </div>
+                                <div class="comment-controls">
+                                  {% if r.related_user_id == session['username'] %}
+                                    <small><a href="#a" id="reply-btn" class="reply-btn">reply</a> - <a href="#">edit</a> - <a href="#" style="color:#ce1414;">delete</a></small>
+                                  {% else %}
+                                    <small><a href="#a" id="reply-btn" class="reply-btn">reply</a></small>
+                                  {% endif %}
+                                </div>
+
+                                <div class="reply-form hidden r" id="{{ r.comment_id }}">                                  
+                                  <form action="{{ url_for('add_reply') }}" method="POST" enctype="multipart/form-data">
+
+                                    <input type="hidden" name="related_post_id" id="related_post_id" value="{{ post.post_id }}">
+                                    <input type="hidden" name="parent_level" id="parent_level" value="{{ r.comment_level }}">
+                                    <input type="hidden" name="parent_id" id="parent_id" class="parent_id" value="{{ r.parent_id }}">
+                                    <input type="hidden" name="top_parent_id" id="top_parent_id" value="{{ reply.top_parent_id }}">
+
+                                    <input type="hidden" name="subreddit" id="subreddit" value="{{ post.related_subreddit_name }}">
+                                    <input type="hidden" name="related_post_id" id="related_post_id" value="{{ post.post_id }}">
+                                    <input type="hidden" name="post_title" id="post_title" value="{{ post.url_friendly_title }}">
+
+                                    <textarea rows="2" class="form-control comment-form" name="reply_text" id="reply_text" placeholder="reply to comment" required autofocus></textarea>
+                                    <br><button type="submit" class="btn btn-default btn-xs btn-sq">reply</button>
+                                  </form>
+                                </div>
+
+
+                              </div>
+                            </div>
+
+
+
+
+                                {% endif %}
+                              {% endfor %}
+
+
+
+
+                            {% endfor %} <!-- /end level 1 comment -->
+
+                          {% endfor %} <!-- /end top level comment -->
+
+                      
+
+
+                        </div>
+                        
+
+                        <!-- Sidebar toggle -->
+                        <a href="#menu-toggle" class="btn btn-default btn-sm toggle-sidebar" id="menu-toggle"><span class="glyphicon glyphicon-th-list"> </span> Sidebar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+     
+
+    <!-- CONFIRM DELETE POST -->
+      <div class="modal fade" id="delete-post-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      Confirm Deletion
+                  </div>
+                  <div class="modal-body">
+                      Are you sure you want to permanently delete this post?
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                      <a href="#" id="confirm-delete-post" class="btn btn-danger">Delete</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      
+    {% endfor %}
+
+
+
+
+  {% else %}
+    {% if error %}
+      <div class="alert alert-info" role="alert">
+        <strong>Oops! </strong> - <strong>{{ error }}</strong> is not a
+        subreddit, why not create it yourself? <br><br><a class="btn btn-primary
+        btn-sm"
+        href="{{ url_for('subreddit_creation_form') }}">Create a subreddit</a>
+      </div>
+    {% endif %}
+
+  {% endif %}
+
+{% endblock %}
