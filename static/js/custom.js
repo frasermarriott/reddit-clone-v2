@@ -155,5 +155,49 @@ $(function(){
   });
 
 
+// Set thumbnails
+  $(".sub-list-link").filter(function() {
+    url = $(this).attr('href');
+    console.log(url);
+
+    var extension = url.substr( (url.lastIndexOf('.') +1) );
+    switch(extension) {
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      break;
+      default:
+        $(this).parent().children().find('.link-thumb').addClass('default-thumb'); 
+    }
+
+
+    // check for youtube links
+
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]{11,11}).*/;
+    var match = url.match(regExp);
+    if (match){ 
+      if (match.length >= 2){
+        youtube_id = match[2]
+        youtube_thumb = "url(https://img.youtube.com/vi/" + youtube_id + "/0.jpg)"
+        $(this).parent().children().find('.link-thumb').removeClass('default-thumb').css({'background-image' : youtube_thumb});
+        
+        $(this).parent().children().find('.link-thumb').children().css({'background-image' : 'url("https://i.imgur.com/MfoMU0Y.png")', 'background-repeat' : 'no-repeat', 'background-position' : '50% 50%'});
+      }
+    }
+  
+
+
+
+    //var ext = url.split('.').pop().toLowerCase();
+    //var ext = url.substr( (url.lastIndexOf('.') +1) );
+
+    //console.log(ext);
+    //if(ext != 'jpg'){
+    //  $(this).parent().children().find('.link-thumb').addClass('default-thumb');
+    //}
+
+
+  });
+
 
 });

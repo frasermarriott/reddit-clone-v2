@@ -214,6 +214,16 @@ def root():
   cursor.execute("SELECT * FROM posts ORDER BY post_timestamp DESC")
   new_posts = cursor.fetchall()
 
+  #: get links
+  #cursor.execute("SELECT post_link FROM posts ORDER BY post_timestamp DESC")
+  #get_links = cursor.fetchall()
+  #for link in get_links:
+  #  parse_link = urlparse(link)
+  #  if parse_link.netloc=='www.youtube.com':
+  #    youtube=='true'
+  #  else:
+  #    youtube=='false'
+
   #: get posts ordered by vote count
   cursor.execute("SELECT * FROM posts ORDER BY cast(post_votes as REAL) DESC")
   top_posts = cursor.fetchall()
