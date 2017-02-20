@@ -13,8 +13,23 @@
   <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+  <link href="https://fonts.googleapis.com/css?family=Jockey+One" rel="stylesheet">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/fonts/glyphicons-halflings-regular.woff2" rel="application/font-woff2">
+
+  <!-- Material Design fonts -->
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
   <!-- Bootstrap css -->
   <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+  <!-- Bootstrap Material Design -->
+  <link href="{{ url_for('static', filename='css/bootstrap-material-design.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/ripples.min.css') }}" rel="stylesheet">
+
+  <!-- Dropdown.js -->
+  <link href="//cdn.rawgit.com/FezVrasta/dropdown.js/master/jquery.dropdown.css" rel="stylesheet">
 
   <!-- Style -->
   <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
@@ -35,7 +50,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -145,6 +160,19 @@
   
 
   <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+  <!-- Material Design for Bootstrap -->
+  <script src="{{ url_for('static', filename='js/material.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/ripples.min.js') }}"></script>
+  <script>
+    $.material.init();
+  </script>
+
+  <!-- Dropdown.js -->
+  <script src="https://cdn.rawgit.com/FezVrasta/dropdown.js/master/jquery.dropdown.js"></script>
+  <script>
+    $("#dropdown-menu select").dropdown();
+  </script>
 
                 <script type="text/javascript">
                     $(function() {

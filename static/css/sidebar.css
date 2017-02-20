@@ -108,7 +108,7 @@
     background: none;
 }
 
-@media(min-width:768px) {
+@media(min-width:1024px) {
     #wrapper {
         margin-top: -20px;
         padding-right: 250px;

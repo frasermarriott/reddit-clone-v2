@@ -3,10 +3,16 @@
   .navbar {
     border-radius: 0px !important;
   }
+}
 
+@media (min-width: 1024px) {
   .toggle-sidebar {
     display: none;
   }
+}
+
+.sidebar-nav > .btn {
+  margin: 10px 0px !important;
 }
 
 pre {
@@ -14,11 +20,28 @@ pre {
 }
 
 .navbar-brand {
-  font-family: sans-serif;
+  color: #fff !important;
+  font-size: 1.8em;
+  font-family: 'Jockey One', sans-serif;
+  text-shadow: 2px 4px 3px rgba(0,0,0,0.1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-#logo-img {
-  height: 100%;
+
+/*#logo-img {
+  height: 90%;
+  margin-top: 4px;
   float: left;
+}*/
+
+#logo-img {
+  height: 90%;
+  margin-top: 4px;
+  float: left;
+  background: darkcyan;
+  border-radius: 50%;
+  padding: 3px;
+  margin-right: 6px;
 }
 
 .dropdown-menu {
@@ -357,48 +380,68 @@ div.text-thumb {
 }
 
 
-
-.btn-round {
-  background-color: #d23f31;
-  border-radius: 999em;
-  width: 56px;
-  height: 56px;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  line-height: 0;
-  font-size: 30px;
-  position: relative;
-  cursor: pointer;
-  display: inline-block;
+.btn.btn-fab.toggle-sidebar {
+  position: fixed;
 }
-
-.btn-round span {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  height: 100%;
-  width: 100%;
-  text-align: center;
-  margin-top: -1px;
-  color: #FFF;
-  line-height: 0;
-}
-
-.green { background-color: #57A429; }
-.blue { background-color: #38818F;}
-.orange { background-color: #D28031; }
-
 
 #sidebar-wrapper {
   position: fixed !important;
   top: 0px;
+  overflow-y: scroll !important;
 }
 
 .sidebar-spacer {
-  margin-top: 57px;
+  margin-top: 100px;
 }
 
-.navbar-inverse {
+#page-content-wrapper {
+  position: relative !important;
+}
+
+@media (min-width: 768px) and (max-width: 1400px) {
+  .container {
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 1375px) {
+  .container {
+    width: 80% !important;
+  }
+}
+
+@media (max-width: 768px){
+  .container {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+}
+
+.bs-callout > small {
+  white-space: pre;
+}
+
+.navbar {
   z-index: 5555;
+}
+
+
+.modal {
+  text-align: center;
+  }
+
+.modal:before {
+  display: inline-block;
+  vertical-align: middle;
+  content: " ";
+  height: 100%;
+}
+
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
 }
 
 
