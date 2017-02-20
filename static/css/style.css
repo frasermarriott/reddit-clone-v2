@@ -11,6 +11,14 @@
   }
 }
 
+small {
+  font-size: 100%;
+}
+
+.navbar .navbar-nav>li>a {
+  font-size: 1.2em !important;
+}
+
 .sidebar-nav > .btn {
   margin: 10px 0px !important;
 }
@@ -114,6 +122,7 @@ a.post-title-link:hover {
   text-align: center;
   padding-right: 7px;
   margin-left: -10px;
+  font-size: 1.1em;
 }
 .votes-number {
   color: #9c9c9c;
@@ -122,6 +131,11 @@ a.post-title-link:hover {
 .upvote {
   color: #9c9c9c;
   margin-left: -1px;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  padding: 0.8em;
+  margin: -0.8em;
 }
 .upvote:hover {
   cursor: pointer;
@@ -129,6 +143,11 @@ a.post-title-link:hover {
 }
 .upvoted {
   color: #ff4500;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  padding: 0.8em;
+  margin: -0.8em;
 }
 .upvoted:hover {
   cursor: pointer;
@@ -144,6 +163,11 @@ a.post-title-link:hover {
 }
 .prev-upvoted {
   color: #ff4500;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  padding: 0.8em;
+  margin: -0.8em;
 }
 .prev-upvoted:hover {
   cursor: pointer;
@@ -159,6 +183,11 @@ a.post-title-link:hover {
 .downvote {
   color: #9c9c9c;
   margin-top: -2px;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  padding: 0.8em;
+  margin: -0.8em;
 }
 .downvote:hover {
   cursor: pointer;
@@ -166,6 +195,11 @@ a.post-title-link:hover {
 }
 .downvoted {
   color: #4c94ff;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  padding: 0.8em;
+  margin: -0.8em;
 }
 .downvoted:hover {
   cursor: pointer;
@@ -181,6 +215,11 @@ a.post-title-link:hover {
 }
 .prev-downvoted {
   color: #4c94ff;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  padding: 0.8em;
+  margin: -0.8em;
 }
 .prev-downvoted:hover {
   cursor: pointer;
