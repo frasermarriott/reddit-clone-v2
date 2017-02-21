@@ -320,6 +320,11 @@ a.post-title-link:hover {
 
 /* Bootstrap Callouts */
 
+.bs-callout-custom {
+  border-left: 5px solid #d0d0d0 !important;
+}
+
+
 .bs-callout {
     padding: 20px;
     margin: 20px 0;
@@ -463,6 +468,13 @@ div.text-thumb {
   .container {
     padding-right: 0 !important;
     padding-left: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .container > .container-padding {
+    padding-right: 15px;
+    padding-left: 15px;
   }
 }
 

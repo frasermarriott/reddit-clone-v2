@@ -74,7 +74,7 @@
                       {% set downvote_count = 0 %}
                          {% for post in new_posts %}
                       
-                          <div class="bs-callout bs-callout">
+                          <div class="bs-callout bs-callout-custom">
 
                             <div class="post-votes noselect">
                               <input type="hidden" class="vote-post-id" value="{{ post.post_id }}">
@@ -147,7 +147,9 @@
                         <span class="toggler image-toggler noselect hidden"> - <i class="glyphicon glyphicon-picture"> </i> expand image</span>
 
                           <div class="toggle image-toggle hidden">
-                            <img src="{{ post.post_link }}" height="300px" width="400px">
+                            {% if post.post_type == 'link' %}
+                              <img src="{{ post.post_link }}" class="img-responsive"  width="500px">
+                            {% endif %}
                           </div>
 
 
