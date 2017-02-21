@@ -158,16 +158,19 @@ $(function(){
 // Set thumbnails
   $(".sub-list-link").filter(function() {
     url = $(this).attr('href');
-    console.log(url);
+    //console.log(url);
 
     var extension = url.substr( (url.lastIndexOf('.') +1) );
     switch(extension) {
       case 'jpg':
       case 'jpeg':
       case 'png':
+        $(this).parent().find('.image-toggler').removeClass('hidden');
+        $(this).parent().children().find('.image-toggle').removeClass('hidden');
       break;
       default:
         $(this).parent().children().find('.link-thumb').addClass('default-thumb'); 
+
     }
 
 
@@ -179,25 +182,32 @@ $(function(){
       if (match.length >= 2){
         youtube_id = match[2]
         youtube_thumb = "url(https://img.youtube.com/vi/" + youtube_id + "/0.jpg)"
+        embed_link = "https://www.youtube.com/embed/" + youtube_id
+
         $(this).parent().children().find('.link-thumb').removeClass('default-thumb').css({'background-image' : youtube_thumb});
-        
-        $(this).parent().children().find('.link-thumb').children().css({'background-image' : 'url("https://i.imgur.com/MfoMU0Y.png")', 'background-repeat' : 'no-repeat', 'background-position' : '50% 50%'});
+        $(this).parent().find('.youtube-toggler').removeClass('hidden');
+        $(this).parent().children().find('.youtube-toggle').removeClass('hidden');
+        //$(this).parent().children().find('.youtube-toggle').addClass('isyt');
+        $(this).parent().children().find('iframe').attr('src',embed_link);
+        $(this).parent().children().find('.link-thumb').children().css({'background-image' : 'url("http://i.imgur.com/MfoMU0Y.png")', 'background-repeat' : 'no-repeat', 'background-position' : '50% 50%', 'background-size' : '23px'});
       }
     }
   
-
-
-
-    //var ext = url.split('.').pop().toLowerCase();
-    //var ext = url.substr( (url.lastIndexOf('.') +1) );
-
-    //console.log(ext);
-    //if(ext != 'jpg'){
-    //  $(this).parent().children().find('.link-thumb').addClass('default-thumb');
-    //}
-
-
   });
 
+
+
+  $('.youtube-toggler').click(function() {
+      $(this).siblings('.youtube-toggle').toggleClass('hidden');
+  });
+
+  $('.image-toggler').click(function() {
+      $(this).siblings('.image-toggle').toggleClass('hidden');
+  });
+  
+ /* $('.toggle-all').click(function() {
+      $('.isyt').toggleClass('hidden');
+  });
+*/
 
 });

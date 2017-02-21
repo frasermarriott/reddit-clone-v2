@@ -131,7 +131,38 @@
                           {% endif %}
                             <small>submitted on {{ post.post_timestamp }} by <a href="{{ url_for('user',user=post.related_user_id) }}">/u/{{ post.related_user_id }}</a> to <a href="{{ url_for('subreddit',subreddit=post.related_subreddit_name) }}">/r/{{ post.related_subreddit_name }}</a> </small> 
                             <br><small><a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}">comments</a></small>
+                          
+                        
+                        
+                        <!-- Toggle Embedded YouTube Player -->
+                        <span class="toggler youtube-toggler noselect hidden"> - <i class="glyphicon glyphicon-expand"> </i> expand video</span>
+                        
+                          <div class="toggle youtube-toggle hidden">
+                            <iframe class="youtube-vid" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
                           </div>
+                        
+
+
+                        <!-- Toggle Embedded Images -->
+                        <span class="toggler image-toggler noselect hidden"> - <i class="glyphicon glyphicon-picture"> </i> expand image</span>
+
+                          <div class="toggle image-toggle hidden">
+                            <img src="{{ post.post_link }}" height="300px" width="400px">
+                          </div>
+
+
+                        <!--<span class="toggle-all"> expand all content</span>-->
+    
+
+
+
+
+
+
+                          </div>
+
+
+
                                                                                     
                         {% endfor %} 
                        </div><!-- /new -->

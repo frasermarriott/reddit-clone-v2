@@ -19,6 +19,14 @@ small {
   font-size: 1.2em !important;
 }
 
+.nav-tabs > li {
+  margin-bottom: 0px;
+}
+
+.nav-tabs > li.active {
+  background: rgb(25,160,148);
+}
+
 .sidebar-nav > .btn {
   margin: 10px 0px !important;
 }
@@ -392,7 +400,8 @@ div.link-thumb {
   background-repeat: no-repeat;
   background-position: 50% 50%;
   border-radius: 30px;
-  position: relative
+  position: relative;
+  margin-bottom: 60px;
 }
 
 div.text-thumb {
@@ -406,7 +415,8 @@ div.text-thumb {
   background-repeat: no-repeat;
   background-position: 50% 50%;
   border-radius: 30px;
-  position: relative
+  position: relative;
+  margin-bottom: 60px;
 }
 
 .thumb-href {
@@ -457,7 +467,7 @@ div.text-thumb {
 }
 
 .bs-callout > small {
-  white-space: pre;
+ /* white-space: pre; */
 }
 
 .navbar {
@@ -483,6 +493,38 @@ div.text-thumb {
   vertical-align: middle;
 }
 
+.toggler {
+  cursor: pointer;
+}
+
+.toggler:hover {
+  text-shadow: 2px 4px 3px rgba(0,0,0,0.1);
+}
+
+.toggler > .glyphicon {
+  opacity: 0.7;
+}
+
+.youtube-toggle {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  padding-top: 25px;
+  height: 0;
+}
+.youtube-toggle iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+
+
+.hidden {
+  visibility: hidden;
+}
 
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
