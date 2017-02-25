@@ -40,7 +40,7 @@
                   </li>
                 {% endif %}
                 <hr>
-                <li>
+                <!--<li>
                     <small>Heading:</small>
                     <p class="sidebar-item">sidebar content</p>
                 </li>
@@ -48,7 +48,7 @@
                 <li>
                     <small>Heading:</small>
                     <p class="sidebar-item">more sidebar content...</p>
-                </li>
+                </li>-->
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -74,7 +74,7 @@
                       {% set downvote_count = 0 %}
                          {% for post in new_posts %}
                       
-                          <div class="bs-callout bs-callout-custom">
+                          <div class="bs-callout bs-callout">
 
                             <div class="post-votes noselect">
                               <input type="hidden" class="vote-post-id" value="{{ post.post_id }}">
@@ -133,9 +133,11 @@
                             <br><small><a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}">comments</a></small>
                           
                         
+                        <!-- Album icon --->
+                        <span class="toggler album-button noselect hidden"> &nbsp; <i class="glyphicon glyphicon-picture"> </i> <a href="{{post.post_link}}" target="_blank">album</a></span>
                         
                         <!-- Toggle Embedded YouTube Player -->
-                        <span class="toggler youtube-toggler noselect hidden"> - <i class="glyphicon glyphicon-expand"> </i> expand video</span>
+                        <span class="toggler youtube-toggler noselect hidden"> &nbsp; <i class="glyphicon glyphicon-expand"> </i> expand video</span>
                         
                           <div class="toggle youtube-toggle hidden">
                             <iframe class="youtube-vid" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
@@ -144,7 +146,9 @@
 
 
                         <!-- Toggle Embedded Images -->
-                        <span class="toggler image-toggler noselect hidden"> - <i class="glyphicon glyphicon-picture"> </i> expand image</span>
+                        <span class="toggler image-toggler noselect hidden"> &nbsp; <i class="glyphicon glyphicon-picture"> </i> expand image</span>
+
+
 
                           <div class="toggle image-toggle hidden">
                             {% if post.post_type == 'link' %}
@@ -152,13 +156,16 @@
                             {% endif %}
                           </div>
 
+                        <span class="toggler image-toggler-link-fix noselect hidden"> &nbsp; <i class="glyphicon glyphicon-picture"> </i> expand image</span>
+                          <div class="toggle image-toggle-link-fix hidden">
+                            {% if post.post_type == 'link' %}
+                              <img src="{{ post.post_link }}.jpg" class="img-responsive"  width="500px">
+                            {% endif %}
+                          </div>
+
 
                         <!--<span class="toggle-all"> expand all content</span>-->
     
-
-
-
-
 
 
                           </div>

@@ -184,7 +184,7 @@ $(function(){
         youtube_thumb = "url(https://img.youtube.com/vi/" + youtube_id + "/0.jpg)"
         embed_link = "https://www.youtube.com/embed/" + youtube_id
 
-        $(this).parent().children().find('.link-thumb').removeClass('default-thumb').css({'background-image' : youtube_thumb});
+        $(this).parent().children().find('.link-thumb').removeClass('default-thumb').css({'background-image' : youtube_thumb, 'background-size' : '177%'});
         $(this).parent().find('.youtube-toggler').removeClass('hidden');
         $(this).parent().children().find('.youtube-toggle').removeClass('hidden');
         //$(this).parent().children().find('.youtube-toggle').addClass('isyt');
@@ -192,6 +192,60 @@ $(function(){
         $(this).parent().children().find('.link-thumb').children().css({'background-image' : 'url("http://i.imgur.com/MfoMU0Y.png")', 'background-repeat' : 'no-repeat', 'background-position' : '50% 50%', 'background-size' : '23px'});
       }
     }
+
+
+    var imgurCheck = /^.*(imgur\.com\/[a-zA-Z0-9]{6,8})(?!\.jpg|\.jpeg|\.png)(?:[^a-zA-Z0-9]|$).*/;
+    var imgurMatch = url.match(imgurCheck);
+    if (imgurMatch){
+      //console.log(imgurMatch);
+      $(this).parent().children().find('.link-thumb').addClass('default-img-thumb');
+    }
+
+
+
+    var imgurCheckDirectLink = /^.*(imgur\.com\/[a-zA-Z0-9]{6,8})(?!\.jpg|\.jpeg|\.png|\.gif|\.gifv)(?:[^a-zA-Z0-9]|$).*/;
+    var imgurMatchDirectLink = url.match(imgurCheckDirectLink);
+    if (imgurMatchDirectLink){
+ 
+      fixedUrl = "url(" + url + ".jpg)"
+
+      $(this).parent().children().find('.link-thumb').removeClass('default-thumb default-img-thumb').css('background-image', fixedUrl);
+      $(this).parent().find('.image-toggler-link-fix').removeClass('hidden');
+
+    }
+
+
+
+    var imgurAlbumCheck = /^.*(imgur\.com\/a\/(.*?)(?:[#\/].*|$))/;
+    var imgurAlbumMatch = url.match(imgurAlbumCheck);
+    if (imgurAlbumMatch){
+      //console.log(imgurAlbumMatch);
+      //console.log(imgurAlbumMatch[2]);
+      var albumUrlApi = "https://api.imgur.com/3/album/"+imgurAlbumMatch[2];
+      //console.log(albumUrlApi);
+      
+      // Get album cover image using imgur api
+      $.ajax({
+        type: "GET",
+        url: albumUrlApi,
+        dataType: "json",
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', 'Client-ID 54da2a43d02bef3');
+        },
+        context: this,
+        success: function(data) {
+          //console.log(data.data.cover);
+          albumCoverId = data.data.cover;
+          albumCoverUrl = "url(https://imgur.com/" + albumCoverId + ".jpg)"
+
+          console.log(albumCoverUrl);
+          $(this).parent().children().find('.link-thumb').removeClass('default-thumb').css({'background-image' : albumCoverUrl});
+          $(this).parent().find('.album-button').removeClass('hidden');
+        }
+      });
+    }
+
+    
   
   });
 
@@ -204,6 +258,11 @@ $(function(){
   $('.image-toggler').click(function() {
       $(this).siblings('.image-toggle').toggleClass('hidden');
   });
+
+  $('.image-toggler-link-fix').click(function() {
+      $(this).siblings('.image-toggle-link-fix').toggleClass('hidden');
+  });
+
   
  /* $('.toggle-all').click(function() {
       $('.isyt').toggleClass('hidden');

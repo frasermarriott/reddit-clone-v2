@@ -395,6 +395,10 @@ div.default-thumb {
   background-image: url(https://i.imgur.com/GK3uwxk.png) !important;
 }
 
+div.default-img-thumb {
+  background-image: url(https://i.imgur.com/74xArxy.png) !important;
+}
+
 div.link-thumb {
   width: 60px;
   height: 60px;
@@ -536,7 +540,9 @@ div.text-thumb {
   margin-top: 15px;
 }
 
-
+.album-button > a {
+  text-decoration: none;
+}
 
 
 .hidden {
