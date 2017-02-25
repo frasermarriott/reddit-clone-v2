@@ -13,11 +13,11 @@
               <a href="{{ url_for('submit_form', _anchor='text') }}" class="btn btn-info btn-raised btn-block btn-sq"><span class="glyphicon glyphicon-pencil"> </span> new text post</a>
               <a href="{{ url_for('subreddit_creation_form') }}" class="btn btn-default btn-raised btn-block btn-sq btn-create-sub"><span class="glyphicon glyphicon-wrench"> </span> create a subreddit</a>
                 <li class="sidebar-brand">
-                    <strong>reddit</strong>
+                    <strong>shareit</strong>
                 </li>
                 
                 <li>
-                    <small class="sidebar-item">Reddit is a community based website where you can share links, text, and comments</small>
+                    <small class="sidebar-item">shareit is a python application based on <a href="https://www.reddit.com">reddit</a>. It's a community based website where you can share links, text, and comments</small>
                 </li>
                 
                 
@@ -133,7 +133,7 @@
                             <br><small><a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}">comments</a></small>
                           
                         
-                        <!-- Album icon --->
+                        <!-- Album icon -->
                         <span class="toggler album-button noselect hidden"> &nbsp; <i class="glyphicon glyphicon-picture"> </i> <a href="{{post.post_link}}" target="_blank">album</a></span>
                         
                         <!-- Toggle Embedded YouTube Player -->
@@ -159,7 +159,7 @@
                         <span class="toggler image-toggler-link-fix noselect hidden"> &nbsp; <i class="glyphicon glyphicon-picture"> </i> expand image</span>
                           <div class="toggle image-toggle-link-fix hidden">
                             {% if post.post_type == 'link' %}
-                              <img src="{{ post.post_link }}.jpg" class="img-responsive"  width="500px">
+                              <img src="" class="img-responsive"  width="500px">
                             {% endif %}
                           </div>
 

@@ -194,6 +194,7 @@ $(function(){
     }
 
 
+    // Add default image thumbnail for imgur links that do not end with .jpg/jpeg/png
     var imgurCheck = /^.*(imgur\.com\/[a-zA-Z0-9]{6,8})(?!\.jpg|\.jpeg|\.png)(?:[^a-zA-Z0-9]|$).*/;
     var imgurMatch = url.match(imgurCheck);
     if (imgurMatch){
@@ -202,28 +203,28 @@ $(function(){
     }
 
 
-
+    // Check for non-direct imgur links and append .jpg file extension so that thumbnails display correctly
     var imgurCheckDirectLink = /^.*(imgur\.com\/[a-zA-Z0-9]{6,8})(?!\.jpg|\.jpeg|\.png|\.gif|\.gifv)(?:[^a-zA-Z0-9]|$).*/;
     var imgurMatchDirectLink = url.match(imgurCheckDirectLink);
     if (imgurMatchDirectLink){
  
-      fixedUrl = "url(" + url + ".jpg)"
+      fixedUrl = url + ".jpg"
+      fixedUrlCSS = "url(" + url + ".jpg)"
 
-      $(this).parent().children().find('.link-thumb').removeClass('default-thumb default-img-thumb').css('background-image', fixedUrl);
+      $(this).parent().children().find('.link-thumb').removeClass('default-thumb default-img-thumb').css('background-image', fixedUrlCSS);
       $(this).parent().find('.image-toggler-link-fix').removeClass('hidden');
+      $(this).parent().find('.img-responsive').attr('src', fixedUrl);
 
     }
 
 
-
+    // Check if link is imgur album
     var imgurAlbumCheck = /^.*(imgur\.com\/a\/(.*?)(?:[#\/].*|$))/;
     var imgurAlbumMatch = url.match(imgurAlbumCheck);
     if (imgurAlbumMatch){
-      //console.log(imgurAlbumMatch);
-      //console.log(imgurAlbumMatch[2]);
+
       var albumUrlApi = "https://api.imgur.com/3/album/"+imgurAlbumMatch[2];
-      //console.log(albumUrlApi);
-      
+     
       // Get album cover image using imgur api
       $.ajax({
         type: "GET",
@@ -250,7 +251,7 @@ $(function(){
   });
 
 
-
+  // Media toggle buttons
   $('.youtube-toggler').click(function() {
       $(this).siblings('.youtube-toggle').toggleClass('hidden');
   });
