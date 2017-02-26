@@ -404,11 +404,13 @@ p.minimise {
 }
 
 div.default-thumb {
-  background-image: url(https://i.imgur.com/GK3uwxk.png) !important;
+  /*background-image: url(https://i.imgur.com/GK3uwxk.png) !important;*/
+  background-image: url(../img/icons/link-icon-default.png) !important;
 }
 
 div.default-img-thumb {
-  background-image: url(https://i.imgur.com/74xArxy.png) !important;
+  /*background-image: url(https://i.imgur.com/74xArxy.png) !important;*/
+  background-image: url(../img/icons/image-icon-default.png) !important;
 }
 
 div.link-thumb {
@@ -431,7 +433,8 @@ div.text-thumb {
   float: left;
   margin-right: 15px;
   margin-top: -4px;
-  background-image: url(https://i.imgur.com/6bB8Y9o.png);
+  background-image: url(../img/icons/text-post-icon.png);
+  /*background-image: url(https://i.imgur.com/6bB8Y9o.png);*/
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50% 50%;

@@ -541,6 +541,7 @@ def delete_post():
       cursor = con.cursor()
 
       cursor.execute("DELETE FROM posts WHERE post_id=?",(post_id,))
+      cursor.execute("DELETE FROM comments WHERE related_post_id=?",(post_id,))
       con.commit()
 
       message = 'post_deleted'
