@@ -21,9 +21,9 @@
 
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
-            <ul class="sidebar-nav"><br>
-                <a href="{{ url_for('submit_form', _anchor='link') }}" class="btn btn-primary btn-block btn-sq"><span class="glyphicon glyphicon-link"> </span> new link</a>
-                <a href="{{ url_for('submit_form', _anchor='text') }}" class="btn btn-primary btn-block btn-sq"><span class="glyphicon glyphicon-pencil"> </span> new text post</a>
+            <ul class="sidebar-nav"><div class="sidebar-spacer"></div>
+                <a href="{{ url_for('submit_form', _anchor='link') }}" class="btn btn-info btn-raised btn-block btn-sq"><span class="glyphicon glyphicon-link"> </span> new link</a>
+                <a href="{{ url_for('submit_form', _anchor='text') }}" class="btn btn-info btn-raised btn-block btn-sq"><span class="glyphicon glyphicon-pencil"> </span> new text post</a>
 
               {% for sub in subreddit %}
                 <li class="sidebar-brand">
@@ -65,16 +65,19 @@
                       
                         <!-- Display Post Details -->
                         
-                        <div class="panel panel-default panel-post">
+                        <div class="panel panel-default">
                           <div class="panel-body">
                             {% if post.post_type == 'link' %} 
                               <h3><a href="{{ ''.join([' ',post.post_link]) }}" class="post-title-link" target="_blank"> {{ post.post_title }}</a></h3>
                             {% else %}
                               <h3>{{ post.post_title }}</h3>
-                                <div class="panel panel-default panel-textarea">
-                                  <div class="panel-body">
+                                <!--<div class="panel panel-default panel-textarea">-->
+                                <div>
+                                  <!--<div class="panel-body">-->
+                                  <blockquote>
                                     <p>{{ post.post_textarea }}</p>
-                                  </div>
+                                  </blockquote>
+                                  <!--</div>-->
                                 </div>
 
                             {% endif %}
@@ -94,23 +97,26 @@
 
                         <!-- /end post header -->
 
-                        <div class="comments-wrapper">
+                        <div class="comments-wrapper well well-custom">
                           <div class="comment-form-container">
 
                             <form action="{{ url_for('add_comment') }}" method="POST" enctype="multipart/form-data">
-                              <input type="hidden" name="related_post_id" id="related_post_id" value="{{post.post_id}}">
-                              <input type="hidden" name="parent_id" id="parent_id" value="none">
-                              <input type="hidden" name="related_user_id" id="related_user_id" value="{{session['username']}}">
-                              <input type="hidden" name="comment_level" id="comment_level" value="0">
-                              <input type="hidden" name="comment_votes" id="comment_votes" value="0">
+                              <div class="form-group label-floating is-empty">
+                                <input type="hidden" name="related_post_id" id="related_post_id" value="{{post.post_id}}">
+                                <input type="hidden" name="parent_id" id="parent_id" value="none">
+                                <input type="hidden" name="related_user_id" id="related_user_id" value="{{session['username']}}">
+                                <input type="hidden" name="comment_level" id="comment_level" value="0">
+                                <input type="hidden" name="comment_votes" id="comment_votes" value="0">
 
 
-                              <!-- these will be used to help redirect the user back here after commenting -->
-                              <input type="hidden" name="subreddit" id="subreddit" value="{{post.related_subreddit_name}}">
-                              <input type="hidden" name="post_title" id="post_title" value="{{post.url_friendly_title}}">
+                                <!-- these will be used to help redirect the user back here after commenting -->
+                                <input type="hidden" name="subreddit" id="subreddit" value="{{post.related_subreddit_name}}">
+                                <input type="hidden" name="post_title" id="post_title" value="{{post.url_friendly_title}}">
 
-                              <textarea rows="2" class="form-control comment-form" name="comment_text" id="comment_text" placeholder="Post a comment" required></textarea><br>
-                              <button type="submit" class="btn btn-default btn-sm btn-sq">post comment</button>
+                                <label class="control-label" for="comment_text">Post a comment</label>
+                                <textarea rows="2" class="form-control comment-form" name="comment_text" id="comment_text" required></textarea>
+                                <button type="submit" class="btn btn-default btn-raised btn-sm btn-sq">post comment</button>
+                              </div>
                             </form>
 
                           </div>
@@ -118,7 +124,7 @@
 
 
 
-                         
+                          <div class="comments-container"> 
                           {% for comment in top_level_comments %}
                             <div class="bs-callout bs-callout-primary bs-comment level-{{comment.comment_level}}" id="{{ comment.comment_id }}">
                               <div class="comment-content">
@@ -272,15 +278,15 @@
                             {% endfor %} <!-- /end level 1 comment -->
 
                           {% endfor %} <!-- /end top level comment -->
-
+                          </div><!--comments container-->
                       
-
 
                         </div>
                         
+                        <!-- Sidebar Toggle Button -->
+                        <a href="#menu-toggle" class="btn btn-default btn-fab toggle-sidebar" id="menu-toggle"><i class="material-icons">settings</i><div class="ripple-container"></div></a>
 
-                        <!-- Sidebar toggle -->
-                        <a href="#menu-toggle" class="btn btn-default btn-sm toggle-sidebar" id="menu-toggle"><span class="glyphicon glyphicon-th-list"> </span> Sidebar</a>
+                    
                     </div>
                 </div>
             </div>

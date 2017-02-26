@@ -31,25 +31,27 @@
             <input type="hidden" name="post_type" id="post_type" value="link">
             <input type="hidden" name="post_textarea" id="post_textarea" value="none">
 
-            <div class="form-group">
-              <label for="post_link">URL</label><br>
-              <small id="link-help" class="form-text text-muted">Copy and paste
-              the link you want to share here. e.g. www.example.com</small>
-              <input type="text" maxlength="200" name="post_link" id="post_link"
-              class="form-control nospace" placeholder="Paste URL here" required autofocus>
+            <div class="form-group label-floating is-empty">
+              <label class="control-label" for="post_link">URL</label><br>
+              <!--<small id="link-help" class="form-text text-muted">Copy and paste
+              the link you want to share here. e.g. www.example.com</small>-->
+              <input type="url" maxlength="200" name="post_link" id="post_link"
+              class="form-control nospace" required>
+              <p class="help-block">Paste the link you want to share here. e.g. https://www.example.com</p>
             </div>
 
-            <div class="form-group">
-              <label for="subreddit_title">Title</label><br>
-              <small id="post_title-help" class="form-text text-muted">No
-              longer than 200 characters.</small>
+            <div class="form-group label-floating is-empty">
+              <label class="control-label" for="post_title">Title</label><br>
+              <!--<small id="post_title-help" class="form-text text-muted">No
+              longer than 200 characters.</small>-->
               <input type="text" maxlength="200" name="post_title" id="post_title"
-              class="form-control" placeholder="Give your post a descriptive title" required>
+              class="form-control" required>
+              <p class="help-block">Give your post a descriptive title</p>
             </div>
 
             <div class="form-group">
               <label for="autocomplete">Subreddit</label><br>
-              <small id="subreddit_id-help" class="form-text text-muted">Choose a subreddit to share your link to</small>
+              <!--<small id="subreddit_id-help" class="form-text text-muted">Choose a subreddit to share your link to</small>-->
               
               <div class="input-group">
                 <span class="input-group-addon" id="sub_addon">/r/</span>
@@ -70,7 +72,7 @@
 
             </div> 
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary btn-raised">Submit</button>
 
           </form>
           </div>
@@ -84,23 +86,25 @@
             <input type="hidden" name="post_type" id="post_type" value="text">
             <input type="hidden" name="post_link" id="post_textarea" value="none">
 
-            <div class="form-group">
-              <label for="post_textarea">Text</label><br>
-              <small id="text-help" class="form-text text-muted">Enter the content of your post here. Max 500 characters.</small>
-              <textarea rows="4" maxlength="500" name="post_textarea" id="post_textarea" class="form-control nospace" placeholder="Enter the content of your post here..." required autofocus></textarea>
+            <div class="form-group label-floating is-empty">
+              <label class="control-label" for="post_textarea">Text</label><br>
+              <!--<small id="text-help" class="form-text text-muted">Enter the content of your post here. Max 500 characters.</small>-->
+              <textarea rows="4" maxlength="500" name="post_textarea" id="post_textarea" class="form-control nospace" required autofocus></textarea>
+              <p class="help-block">Enter the content of your post here. Max 500 characters.</p>
             </div>
 
-            <div class="form-group">
-              <label for="subreddit_title">Title</label><br>
-              <small id="post_title-help" class="form-text text-muted">No
-              longer than 200 characters.</small>
+            <div class="form-group label-floating is-empty">
+              <label class="control-label" for="subreddit_title">Title</label><br>
+              <!--<small id="post_title-help" class="form-text text-muted">No
+              longer than 200 characters.</small>-->
               <input type="text" maxlength="200" name="post_title" id="post_title"
-              class="form-control" placeholder="Give your post a descriptive title" required>
+              class="form-control" required>
+              <p class="help-block">Give your post a descriptive title. Max 200 characters.</p>
             </div>
 
             <div class="form-group">
               <label for="autocomplete">Subreddit</label><br>
-              <small id="subreddit_id-help" class="form-text text-muted">Choose a subreddit to share your link to</small>
+              <!--<small id="subreddit_id-help" class="form-text text-muted">Choose a subreddit to share your link to</small>-->
               
               <div class="input-group">
                 <span class="input-group-addon" id="sub_addon">/r/</span>

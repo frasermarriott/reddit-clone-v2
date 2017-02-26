@@ -17,7 +17,7 @@
     <h3>all subreddits</h3>
     {% for row in rows %}
 
-      <div class="bs-callout bs-callout-primary">
+      <div class="bs-callout bs-callout well well-custom">
       <a href="{{ url_for('subreddit', subreddit=row.subreddit_name) }}" class="sub-list-link">/r/{{ row.subreddit_name }}</a>
       <p class="minimise">{{ row.subreddit_desc }}</p>
       </div>

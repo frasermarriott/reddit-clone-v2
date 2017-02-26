@@ -252,6 +252,8 @@ a.post-title-link:hover {
 }
 .bs-comment {
   padding: 20px 20px 10px 20px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
 }
 .bs-callout-reply {
   margin-top: -21px !important;
@@ -380,6 +382,16 @@ a.post-title-link:hover {
 }
 .bs-callout-info h4 {
     color: #5bc0de;
+}
+
+.well-custom {
+  -webkit-box-shadow: 0 2px 7px 0 rgba(0,0,0,.1), 0 6px 20px 0 rgba(0,0,0,.1) !important;
+  box-shadow: 0 2px 7px 0 rgba(0,0,0,.1), 0 6px 20px 0 rgba(0,0,0,.1) !important;
+}
+
+.nav-tabs {
+  border-bottom: 0px !important;
+  box-shadow: 0 2px 7px 0 rgba(0,0,0,.1), 0 6px 20px 0 rgba(0,0,0,.1) !important;
 }
 
 
@@ -542,6 +554,41 @@ div.text-thumb {
 
 .album-button > a {
   text-decoration: none;
+}
+
+
+.bubble {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  background: #fbfbfb;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  margin-top: 20px;
+  border-left: none;
+}
+
+.bubble:after {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: 0 13px 13px;
+  border-color: #f7f7f7 transparent;
+  display: block;
+  width: 0;
+  z-index: 1;
+  top: -13px;
+  left: 6px;
+}
+
+.block-comment {
+  margin-top: 15px;
+}
+
+.comment-text {
+  margin: 6px 0 5px 0;
+  font-size: 1.1em;
 }
 
 

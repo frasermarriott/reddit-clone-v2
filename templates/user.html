@@ -21,7 +21,7 @@
 
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
-            <ul class="sidebar-nav"><br>
+            <ul class="sidebar-nav"><div class="sidebar-spacer"></div>
                 <li class="sidebar-brand">
                     <strong>{{ user.username }}</strong>
                 </li>
@@ -63,7 +63,7 @@
                         {% set upvote_count = 0 %}
                         {% set downvote_count = 0 %}
                           {% for post in user_posts %}
-                           <div class="bs-callout bs-callout-primary">
+                           <div class="bs-callout bs-callout well well-custom">
 
                             <div class="post-votes noselect">
                               <input type="hidden" class="vote-post-id" value="{{ post.post_id }}">
@@ -97,6 +97,22 @@
                             </div>
 
 
+                          {% if post.post_type == 'link' %}
+                            <div class="thumb-img">
+                              <div class="link-thumb" style="background-image: url('{{ post.post_link }}');">
+                                <a class="thumb-href" href="{{ ''.join([' ',post.post_link]) }}" target="_blank"></a>
+                              </div>
+                            </div>
+
+                          {% else %}
+                            <div class="thumb-img">
+                              <div class="text-thumb">
+                                <a class="thumb-href" href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}"></a>
+                              </div>
+                            </div>
+                          {% endif %}
+                           
+
 
                           {% if post.post_type == 'link' %}
                             <a href="{{ ''.join([' ',post.post_link]) }}" class="sub-list-link" target="_blank">{{ post.post_title }} <span class="#"></span></a><br>
@@ -105,7 +121,40 @@
                           {% endif %}
                             <small>submitted on {{ post.post_timestamp }} by <a href="{{ url_for('user',user=post.related_user_id) }}">/u/{{ post.related_user_id }}</a> to <a href="{{ url_for('subreddit',subreddit=post.related_subreddit_name) }}">/r/{{ post.related_subreddit_name }}</a> </small> 
                             <br><small><a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}">comments</a></small>
-                          </div> 
+                          
+
+                          <!-- Album icon -->
+                          <span class="toggler album-button noselect hidden"> &nbsp; <i class="glyphicon glyphicon-picture"> </i> <a href="{{post.post_link}}" target="_blank">album</a></span>
+                        
+                          <!-- Toggle Embedded YouTube Player -->
+                          <span class="toggler youtube-toggler noselect hidden"> &nbsp; <i class="glyphicon glyphicon-expand"> </i> expand video</span>
+                        
+                          <div class="toggle youtube-toggle hidden">
+                            <iframe class="youtube-vid" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+                          </div>
+                        
+
+
+                          <!-- Toggle Embedded Images -->
+                          <span class="toggler image-toggler noselect hidden"> &nbsp; <i class="glyphicon glyphicon-picture"> </i> expand image</span>
+
+
+
+                          <div class="toggle image-toggle hidden">
+                            {% if post.post_type == 'link' %}
+                              <img src="{{ post.post_link }}" class="img-responsive"  width="500px">
+                            {% endif %}
+                          </div>
+
+                          <span class="toggler image-toggler-link-fix noselect hidden"> &nbsp; <i class="glyphicon glyphicon-picture"> </i> expand image</span>
+                          <div class="toggle image-toggle-link-fix hidden">
+                            {% if post.post_type == 'link' %}
+                              <img src="" class="img-responsive"  width="500px">
+                            {% endif %}
+                          </div>
+
+
+                            </div> 
                           {% endfor %}
                         {% else %}
                           <div class="alert alert-warning">
@@ -124,9 +173,9 @@
                           {% for comment in user_comments %}
                             {% for related_post in posts %}
                               {% if related_post.post_id == comment.related_post_id %}
-                              <div class="bs-callout bs-callout-info">
+                              <div class="bs-callout bs-callout-info well well-sm well-custom">
                                 <small><a href="{{ url_for('user', user=user.username) }}">{{ user.username }}</a> commented on post - <a href="{{ url_for('comments_section', subreddit=related_post.related_subreddit_name, post_id = related_post.post_id, post_title = related_post.url_friendly_title, _anchor=comment.comment_id) }}">{{ related_post.post_title }}</a></small> 
-                                <blockquote><p>{{ comment.comment_text }}</p></blockquote>
+                                <blockquote class="block-comment"><p>{{ comment.comment_text }}</p></blockquote>
                                 <small>{{ comment.comment_timestamp }}</small> 
                               </div>
                               {% endif %}
@@ -147,9 +196,9 @@
                       </div><!-- comments tab -->
 
 
+                        <!-- Sidebar Toggle Button -->
+                        <a href="#menu-toggle" class="btn btn-default btn-fab toggle-sidebar" id="menu-toggle"><i class="material-icons">settings</i><div class="ripple-container"></div></a>
 
-
-                        <a href="#menu-toggle" class="btn btn-default btn-sm toggle-sidebar" id="menu-toggle"><span class="glyphicon glyphicon-th-list"> </span> Sidebar</a>
                     </div>
                 </div>
             </div>

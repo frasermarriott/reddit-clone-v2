@@ -13,49 +13,52 @@
 
           <form action="{{ url_for('create_subreddit') }}" method="POST" enctype="multipart/form-data">
 
-            <div class="form-group">
-              <label for="subreddit_name">Name your subreddit</label><br>
-              <small id="name-help" class="form-text text-muted">This
-              will appear in the URL. No
-              spaces, e.g. "books" or "bookclub". Once chosen, this name cannot
-              be changed.</small>
+            <div class="form-group label-floating is-empty">
+              <label class="control-label" for="subreddit_name">Name your subreddit</label><br>
+              <!--<small id="name-help" class="form-text text-muted">This
+                will appear in the URL. No
+                spaces, e.g. "books" or "bookclub". Once chosen, this name cannot
+                be changed.</small>-->
               <input type="text" maxlength="20" name="subreddit_name" id="subreddit_name"
-              class="form-control nospace" placeholder="Name your subreddit" required autofocus>
+              class="form-control nospace" required>
+              <p class="help-block">Name your subreddit. This will appear in the url e.g. /r/yoursubredditname. No spaces, e.g. "books" or "bookclub". Once chosen, this name cannot be changed.</p>
             </div>
 
-            <div class="form-group">
-              <label for="subreddit_title">Title</label><br>
-              <small id="title-help" class="form-text text-muted">e.g., "books:
-              made from trees or pixels. recommendations, news, or thoughts."</small>
+            <div class="form-group label-floating is-empty">
+              <label class="control-label" for="subreddit_title">Subtitle</label><br>
+              <!--<small id="title-help" class="form-text text-muted">e.g., "books:
+              made from trees or pixels. recommendations, news, or thoughts."</small>-->
               <input type="text" maxlength="100" name="subreddit_title" id="subreddit_title"
-              class="form-control" placeholder="Give your subreddit a title" required>
+              class="form-control" required>
+              <p class="help-block">Give your subreddit a subtitle e.g. "books: made from trees or pixels. recommendations, news, or thoughts."</p>
             </div>
 
-            <div class="form-group">
-              <label for="subreddit_desc">Describe your subreddit</label><br>
-              <small id="desc-help" class="form-text text-muted">A brief description
-              of what your comminity is about.</small>
+            <div class="form-group label-floating is-empty">
+              <label class="control-label" for="subreddit_desc">Describe your subreddit</label><br>
+              <!--<small id="desc-help" class="form-text text-muted">A brief description
+              of what your comminity is about.</small>-->
 
-              <textarea rows="4" maxlength="500" class="form-control" id="subreddit_desc"
-              name="subreddit_desc" placeholder="Describe your subreddit"
-              required></textarea>
+              <textarea rows="4" maxlength="500" class="form-control" id="subreddit_desc" name="subreddit_desc" required></textarea>
+
+              <p class="help-block">A brief description of what your community is about.</p>
+
             </div>
 
-            <div class="form-group">
-              <label for="subreddit_sidebar">Sidebar information</label><br>
-              <small id="sidebar-help" class="form-text text-muted">This will
+            <div class="form-group label-floating is-empty">
+              <label class="control-label" for="subreddit_sidebar">Sidebar information</label><br>
+              <!--<small id="sidebar-help" class="form-text text-muted">This will
               appear in the sidebar of your subreddit. You may want to include
-              some rules that people in your community should follow.</small>
+              some rules that people in your community should follow.</small>-->
 
-              <textarea rows="4" maxlength="500" class="form-control"
-              id="subreddit_sidebar" name="subreddit_sidebar"
-              placeholder="Sidebar information" required></textarea>
+              <textarea rows="4" maxlength="500" class="form-control" id="subreddit_sidebar" name="subreddit_sidebar" required></textarea>
+
+              <p class="help-block">This will appear in the sidebar of your subreddit. You may want to include some rules that people in your community should follow.</p>
 
             </div>
 
   
 
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary btn-raised">Create</button>
 
           </form>
 

@@ -43,6 +43,29 @@ $(function(){
     $("#wrapper").toggleClass("toggled");
   });
 
+// Hide sidebar toggler when scrolling down, show when scrolling up
+  var mywindow = $(window);
+  var mypos = mywindow.scrollTop();
+  mywindow.scroll(function() {
+      if(mywindow.scrollTop() > mypos) {
+        $('#menu-toggle').fadeOut();
+      }
+      else {
+        $('#menu-toggle').fadeIn();
+      }
+      mypos = mywindow.scrollTop();
+  });
+
+
+// move sidebar on scroll
+  $(window).scroll(function(){
+    var fromTop = $(window).scrollTop();
+    if (fromTop > 50) {
+      $(".sidebar-spacer").css('margin', '+' + (200 - fromTop) + 'px 0px 0px 0px');
+    }
+  });
+
+
 // Tabs for submit post page (link/text)
   
   $(".nav-tabs a").click(function(){
@@ -269,6 +292,8 @@ $(function(){
       $('.isyt').toggleClass('hidden');
   });
 */
+
+  
 
 
 });

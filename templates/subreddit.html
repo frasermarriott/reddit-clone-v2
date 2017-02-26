@@ -21,9 +21,9 @@
 
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
-            <ul class="sidebar-nav"><br>
-                <a href="{{ url_for('submit_form', _anchor='link') }}" class="btn btn-primary btn-block btn-sq"><span class="glyphicon glyphicon-link"> </span> new link</a>
-                <a href="{{ url_for('submit_form', _anchor='text') }}" class="btn btn-primary btn-block btn-sq"><span class="glyphicon glyphicon-pencil"> </span> new text post</a>
+            <ul class="sidebar-nav"><div class="sidebar-spacer"></div>
+                <a href="{{ url_for('submit_form', _anchor='link') }}" class="btn btn-info btn-raised btn-block btn-sq"><span class="glyphicon glyphicon-link"> </span> new link</a>
+                <a href="{{ url_for('submit_form', _anchor='text') }}" class="btn btn-info btn-raised btn-block btn-sq"><span class="glyphicon glyphicon-pencil"> </span> new text post</a>
 
                 <li class="sidebar-brand">
                     <strong>{{ row.subreddit_name }}</strong>
@@ -71,7 +71,7 @@
                     {% set downvote_count = 0 %}
                         {% for post in sub_posts_new %}
 
-                          <div class="bs-callout bs-callout-primary">
+                          <div class="bs-callout bs-callout well well-custom">
 
 
                             <div class="post-votes noselect">
@@ -107,23 +107,77 @@
 
 
                           {% if post.post_type == 'link' %}
+                            <div class="thumb-img">
+                              <div class="link-thumb" style="background-image: url('{{ post.post_link }}');">
+                                <a class="thumb-href" href="{{ ''.join([' ',post.post_link]) }}" target="_blank"></a>
+                              </div>
+                            </div>
+
+                          {% else %}
+                            <div class="thumb-img">
+                              <div class="text-thumb">
+                                <a class="thumb-href" href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}"></a>
+                              </div>
+                            </div>
+                          {% endif %}
+
+
+                          {% if post.post_type == 'link' %}
                             <a href="{{ ''.join([' ',post.post_link]) }}" class="sub-list-link" target="_blank">{{ post.post_title }} <span class="#"></span></a><br>
                           {% else %}
                             <a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}" class="sub-list-link">{{ post.post_title }} <span class="#"></span></a><br>
                           {% endif %}
                             <small>submitted on {{ post.post_timestamp }} by <a href="{{ url_for('user',user=post.related_user_id) }}">/u/{{ post.related_user_id }}</a> to <a href="{{ url_for('subreddit',subreddit=post.related_subreddit_name) }}">/r/{{ post.related_subreddit_name }}</a> </small> 
                             <br><small><a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}">comments</a></small>
+                          
+
+                            <!-- Album icon -->
+                            <span class="toggler album-button noselect hidden"> &nbsp; <i class="glyphicon glyphicon-picture"> </i> <a href="{{post.post_link}}" target="_blank">album</a></span>
+                        
+                            <!-- Toggle Embedded YouTube Player -->
+                            <span class="toggler youtube-toggler noselect hidden"> &nbsp; <i class="glyphicon glyphicon-expand"> </i> expand video</span>
+                        
+                            <div class="toggle youtube-toggle hidden">
+                              <iframe class="youtube-vid" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        
+
+
+                            <!-- Toggle Embedded Images -->
+                            <span class="toggler image-toggler noselect hidden"> &nbsp; <i class="glyphicon glyphicon-picture"> </i> expand image</span>
+
+
+
+                            <div class="toggle image-toggle hidden">
+                              {% if post.post_type == 'link' %}
+                                <img src="{{ post.post_link }}" class="img-responsive"  width="500px">
+                              {% endif %}
+                            </div>
+
+                            <span class="toggler image-toggler-link-fix noselect hidden"> &nbsp; <i class="glyphicon glyphicon-picture"> </i> expand image</span>
+                            
+                            <div class="toggle image-toggle-link-fix hidden">
+                              {% if post.post_type == 'link' %}
+                                <img src="" class="img-responsive"  width="500px">
+                              {% endif %}
+                            </div>
+
+
+
                           </div>
                                                                                     
                         {% endfor %}
                        </div><!-- /new posts -->
+
+
+<!-- TOP POSTS -->
 
                     {% set top_upvote_count = 0 %}
                     {% set top_downvote_count = 0 %}
                        <div id="top" class="tab-pane fade">
                         {% for post in sub_posts_top %}
 
-                          <div class="bs-callout bs-callout-primary">
+                          <div class="bs-callout bs-callout well well-custom">
 
                             <div class="post-votes noselect">
                               <input type="hidden" class="vote-post-id" value="{{ post.post_id }}">
@@ -157,6 +211,22 @@
                             </div>
 
 
+                            {% if post.post_type == 'link' %}
+                            <div class="thumb-img">
+                              <div class="link-thumb" style="background-image: url('{{ post.post_link }}');">
+                                <a class="thumb-href" href="{{ ''.join([' ',post.post_link]) }}" target="_blank"></a>
+                              </div>
+                            </div>
+
+                          {% else %}
+                            <div class="thumb-img">
+                              <div class="text-thumb">
+                                <a class="thumb-href" href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}"></a>
+                              </div>
+                            </div>
+                          {% endif %}
+
+
                           {% if post.post_type == 'link' %}
                             <a href="{{ ''.join([' ',post.post_link]) }}" class="sub-list-link" target="_blank">{{ post.post_title }} <span class="#"></span></a><br>
                           {% else %}
@@ -164,6 +234,39 @@
                           {% endif %}
                             <small>submitted on {{ post.post_timestamp }} by <a href="{{ url_for('user',user=post.related_user_id) }}">/u/{{ post.related_user_id }}</a> to <a href="{{ url_for('subreddit',subreddit=post.related_subreddit_name) }}">/r/{{ post.related_subreddit_name }}</a> </small> 
                             <br><small><a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}">comments</a></small>
+                          
+
+                          <!-- Album icon -->
+                          <span class="toggler album-button noselect hidden"> &nbsp; <i class="glyphicon glyphicon-picture"> </i> <a href="{{post.post_link}}" target="_blank">album</a></span>
+                        
+                          <!-- Toggle Embedded YouTube Player -->
+                          <span class="toggler youtube-toggler noselect hidden"> &nbsp; <i class="glyphicon glyphicon-expand"> </i> expand video</span>
+                        
+                          <div class="toggle youtube-toggle hidden">
+                            <iframe class="youtube-vid" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+                          </div>
+                        
+
+
+                          <!-- Toggle Embedded Images -->
+                          <span class="toggler image-toggler noselect hidden"> &nbsp; <i class="glyphicon glyphicon-picture"> </i> expand image</span>
+
+
+
+                          <div class="toggle image-toggle hidden">
+                            {% if post.post_type == 'link' %}
+                              <img src="{{ post.post_link }}" class="img-responsive"  width="500px">
+                            {% endif %}
+                          </div>
+
+                          <span class="toggler image-toggler-link-fix noselect hidden"> &nbsp; <i class="glyphicon glyphicon-picture"> </i> expand image</span>
+                          <div class="toggle image-toggle-link-fix hidden">
+                            {% if post.post_type == 'link' %}
+                              <img src="" class="img-responsive"  width="500px">
+                            {% endif %}
+                          </div>
+
+
                           </div>
                                                                                     
                         {% endfor %}
@@ -172,8 +275,11 @@
 
                        </div><!-- /tab-content -->
 
-                        <!-- Sidebar toggle -->
-                        <a href="#menu-toggle" class="btn btn-default btn-sm toggle-sidebar" id="menu-toggle"><span class="glyphicon glyphicon-th-list"> </span> Sidebar</a>
+
+
+                        <!-- Sidebar Toggle Button -->
+                        <a href="#menu-toggle" class="btn btn-default btn-fab toggle-sidebar" id="menu-toggle"><i class="material-icons">settings</i><div class="ripple-container"></div></a>
+
                     </div>
                 </div>
             </div>
