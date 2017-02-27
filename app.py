@@ -10,7 +10,7 @@ from logging.handlers import RotatingFileHandler
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 from urlparse import urlparse
-
+from os import path
 
 app = Flask(__name__)
 app.secret_key = 'z\xe1^a\xa5~J5\xd7\xa4Pk\xb0c\xac\x0e\xfb\xda\xff\x1d\x98\xd6i\x81'
@@ -21,7 +21,8 @@ app.secret_key = 'z\xe1^a\xa5~J5\xd7\xa4Pk\xb0c\xac\x0e\xfb\xda\xff\x1d\x98\xd6i
 ##               DATABASE                 ##
 ############################################
 
-db_location = 'var/reddit.db'
+ROOT = path.dirname(path.realpath(__file__))
+db_location = path.join(ROOT,"var/reddit.db")
 
 def get_db():
   db=getattr(g, 'db', None)

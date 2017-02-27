@@ -8,8 +8,53 @@
 @media (min-width: 1024px) {
   .toggle-sidebar {
     display: none;
+    visibility: hidden;
   }
 }
+
+
+
+/* full width on mobile */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
+
+  #page-content-wrapper {
+    padding: 0px !important;
+  }
+
+  .container-fluid {
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+  }
+
+  .navbar-default {
+    padding-left: 10px !important;
+    padding-left: 10px !important;
+  }
+
+  #page-content-wrapper > .container-fluid > .row > .col-lg-12 {
+    position: absolute;
+    width: 100% !important;
+  }
+
+  .row {
+    position: relative !important;
+  }
+}
+
+/* fixes issue where comments would overflow their container */
+#page-content-wrapper > .container-fluid > .row > .col-lg-12 {
+  position: absolute;
+  width: 93%;
+}
+
+
+
+
+
 
 small {
   font-size: 100%;
@@ -467,9 +512,11 @@ div.text-thumb {
   margin-top: 100px;
 }
 
+/*
 #page-content-wrapper {
   position: relative !important;
 }
+*/
 
 @media (min-width: 768px) and (max-width: 1400px) {
   .container {
