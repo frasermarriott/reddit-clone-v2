@@ -52,6 +52,19 @@
 }
 
 
+@media (min-width: 500px) {
+  .post-info-mobile {
+    visibility: hidden;
+    display: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .post-info-full {
+    visibility: hidden;
+    display: none;
+  }
+}
 
 
 
