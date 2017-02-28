@@ -51,6 +51,7 @@
                       <ul class="nav nav-tabs">
                         <li class="active" id="posts-tab"><a href="#posts" id="show-posts"><span class="#"> </span> Posts</a></li>
                         <li id="comments-tab"><a href="#comments" id="show-comments"><span class="#"> </span> Comments</a></li>
+                        <li class="pull-right nav-sub-title">{{ user.username }}</li>
                       </ul> 
 
 
@@ -119,8 +120,15 @@
                           {% else %}
                             <a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}" class="sub-list-link">{{ post.post_title }} <span class="#"></span></a><br>
                           {% endif %}
-                            <small>submitted on {{ post.post_timestamp }} by <a href="{{ url_for('user',user=post.related_user_id) }}">/u/{{ post.related_user_id }}</a> to <a href="{{ url_for('subreddit',subreddit=post.related_subreddit_name) }}">/r/{{ post.related_subreddit_name }}</a> </small> 
-                            <br><small><a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}">comments</a></small>
+                            
+                            <div class="post-info-full">
+                              <small>submitted on {{ post.post_timestamp }} by <a href="{{ url_for('user',user=post.related_user_id) }}">/u/{{ post.related_user_id }}</a> to <a href="{{ url_for('subreddit',subreddit=post.related_subreddit_name) }}">/r/{{ post.related_subreddit_name }}</a> </small> 
+                            </div>
+                            <div class="post-info-mobile">
+                              <small>{{ post.post_timestamp }} <br> <a href="{{ url_for('user',user=post.related_user_id) }}">{{ post.related_user_id }}</a> • <a href="{{ url_for('subreddit',subreddit=post.related_subreddit_name) }}">{{ post.related_subreddit_name }}</a> </small> 
+                            </div> 
+                            
+                            <small><a href="{{ url_for('comments_section', subreddit = post.related_subreddit_name, post_id = post.post_id, post_title = post.url_friendly_title) }}">comments</a></small>
                           
 
                           <!-- Album icon -->

@@ -52,21 +52,42 @@
 }
 
 
-@media (min-width: 500px) {
+@media (min-width: 550px) {
   .post-info-mobile {
     visibility: hidden;
     display: none;
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 550px) {
   .post-info-full {
     visibility: hidden;
     display: none;
   }
+  .sub-list-link {
+    font-size: 1.1em !important;
+  }
+  .post-info-mobile > small {
+    font-size: 90%;
+  }
 }
 
 
+.nav-sub-title {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+  margin-right: 2px;
+  line-height: 1.42857143;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  margin: 0;
+  background-color: transparent!important;
+  border: 0!important;
+  color: #FFF!important;
+  font-weight: 500;
+  cursor: default;
+}
 
 
 small {
