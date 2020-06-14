@@ -2,11 +2,11 @@
 
 ### Author ###
 
-Fraser Marriott (40212234)
+Fraser Marriott
 
 ### What is this repository for? ###
 
-This repository is for improvements made on the coursework that was completed for the Advanced Web Technologies (SET09103) module at Edinburgh Napier University - 2016
+This repository is for improvements made on the coursework that was completed for the Advanced Web Technologies (SET09103) module at Edinburgh Napier University 
 
 ### What does the app do? ###
 
